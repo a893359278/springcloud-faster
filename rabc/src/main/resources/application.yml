@@ -1,0 +1,5 @@
+server:
+  port: 8001
+resources:
+  filter:
+    enable: true

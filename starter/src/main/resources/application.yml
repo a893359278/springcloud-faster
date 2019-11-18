@@ -1,0 +1,6 @@
+resources:
+  filter:
+    enable: true
+server:
+  servlet:
+    context-path:
