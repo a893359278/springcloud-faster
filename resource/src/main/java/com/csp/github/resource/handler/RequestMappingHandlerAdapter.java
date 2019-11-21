@@ -10,17 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author 陈少平
  * @date 2019-11-16 21:57
  */
-public class RequestMappingHandlerAdapter implements MappingHandlerAdapter {
-
-    private RequestMapping r;
+public class RequestMappingHandlerAdapter extends AbstractMappingHandlerAdapter<RequestMapping> {
 
     @Override
-    public boolean adapter(Annotation annotation) {
-        if (commonAdapter(annotation) && annotation instanceof RequestMapping) {
-            r = (RequestMapping) annotation;
-            return true;
-        }
-        return false;
+    public boolean doAdapter(Annotation annotation) {
+        return annotation instanceof RequestMapping;
     }
 
     @Override

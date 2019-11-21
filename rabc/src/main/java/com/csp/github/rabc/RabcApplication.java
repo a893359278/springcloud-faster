@@ -1,5 +1,6 @@
 package com.csp.github.rabc;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,6 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RabcApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RabcApplication.class);
+        SpringApplication application = new SpringApplication(RabcApplication.class);
+        application.setBannerMode(Banner.Mode.OFF);
+        application.run(args);
     }
 }

@@ -1,7 +1,5 @@
-package com.csp.github.resource.config;
+package com.csp.github.resource.protobuf;
 
-import org.springframework.data.redis.connection.DefaultStringRedisConnection;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -17,9 +15,5 @@ public class ProtobufRedisTemplate extends RedisTemplate<String, Object> {
     public ProtobufRedisTemplate(RedisConnectionFactory connectionFactory) {
         setConnectionFactory(connectionFactory);
         afterPropertiesSet();
-    }
-
-    protected RedisConnection preProcessConnection(RedisConnection connection, boolean existingConnection) {
-        return new DefaultStringRedisConnection(connection);
     }
 }

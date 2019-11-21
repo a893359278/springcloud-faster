@@ -1,10 +1,12 @@
-package com.csp.github.resource.config;
+package com.csp.github.resource.protobuf;
 
-import com.dyuproject.protostuff.LinkedBuffer;
-import com.dyuproject.protostuff.ProtobufIOUtil;
-import com.dyuproject.protostuff.ProtostuffIOUtil;
-import com.dyuproject.protostuff.Schema;
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
+
+import io.protostuff.LinkedBuffer;
+import io.protostuff.ProtostuffIOUtil;
+import io.protostuff.Schema;
+import io.protostuff.runtime.DefaultIdStrategy;
+import io.protostuff.runtime.IdStrategy;
+import io.protostuff.runtime.RuntimeSchema;
 import java.util.Objects;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
@@ -17,7 +19,9 @@ import org.springframework.data.redis.serializer.SerializationException;
  */
 public class ProtobufSerializer<T> implements RedisSerializer<T> {
 
-    private static final Schema<SerializeWrap> SERIALIZE_FADE_SCHEMA = RuntimeSchema.getSchema(SerializeWrap.class);
+    static final DefaultIdStrategy STRATEGY = new DefaultIdStrategy(IdStrategy.DEFAULT_FLAGS |
+            IdStrategy.ALLOW_NULL_ARRAY_ELEMENT);
+    private static final Schema<SerializeWrap> SERIALIZE_WRAP_SCHEMA = RuntimeSchema.getSchema(SerializeWrap.class);
 
     @Override
     public byte[] serialize(Object t) throws SerializationException {
@@ -27,10 +31,12 @@ public class ProtobufSerializer<T> implements RedisSerializer<T> {
         }
 
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
-        byte[] bytes;
+        final byte[] bytes;
 
         try {
-            bytes = ProtobufIOUtil.toByteArray(new SerializeWrap(t), SERIALIZE_FADE_SCHEMA, buffer);
+            SerializeWrap wrap = new SerializeWrap();
+            wrap.setObj(t);
+            bytes = ProtostuffIOUtil.toByteArray(wrap, SERIALIZE_WRAP_SCHEMA, buffer);
         } catch (Exception e) {
             throw new SerializationException("Cannot serialize" + e.getMessage(), e);
         } finally {
@@ -44,9 +50,9 @@ public class ProtobufSerializer<T> implements RedisSerializer<T> {
     @Override
     public T deserialize(byte[] bytes) throws SerializationException {
         if (bytes != null && bytes.length != 0) {
-            SerializeWrap warp = new SerializeWrap();
-            ProtostuffIOUtil.mergeFrom(bytes, warp, SERIALIZE_FADE_SCHEMA);
-            return (T) warp.getObj();
+            SerializeWrap wrap = SERIALIZE_WRAP_SCHEMA.newMessage();
+            ProtostuffIOUtil.mergeFrom(bytes, wrap, SERIALIZE_WRAP_SCHEMA);
+            return (T) wrap.getObj();
         } else {
             return null;
         }
@@ -56,10 +62,6 @@ public class ProtobufSerializer<T> implements RedisSerializer<T> {
         private Object obj;
 
         public SerializeWrap() {
-        }
-
-        public SerializeWrap(Object obj) {
-            this.obj = obj;
         }
 
         public Object getObj() {

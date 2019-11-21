@@ -8,17 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author 陈少平
  * @date 2019-11-16 19:07
  */
-public class DeleteMappingHandlerAdapter implements MappingHandlerAdapter{
-
-    private DeleteMapping r;
+public class DeleteMappingHandlerAdapter extends AbstractMappingHandlerAdapter<DeleteMapping>{
 
     @Override
-    public boolean adapter(Annotation annotation) {
-        if (commonAdapter(annotation) && annotation instanceof DeleteMapping) {
-            r = (DeleteMapping) annotation;
-            return true;
-        }
-        return false;
+    public boolean doAdapter(Annotation annotation) {
+        return annotation instanceof DeleteMapping;
     }
 
     @Override

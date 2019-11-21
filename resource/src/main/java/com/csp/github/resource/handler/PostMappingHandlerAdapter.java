@@ -9,17 +9,11 @@ import org.springframework.web.bind.annotation.PutMapping;
  * @author 陈少平
  * @date 2019-11-16 19:07
  */
-public class PostMappingHandlerAdapter implements MappingHandlerAdapter{
-
-    private PostMapping r;
+public class PostMappingHandlerAdapter extends AbstractMappingHandlerAdapter<PostMapping>{
 
     @Override
-    public boolean adapter(Annotation annotation) {
-        if (commonAdapter(annotation) && annotation instanceof PostMapping) {
-            r = (PostMapping) annotation;
-            return true;
-        }
-        return false;
+    public boolean doAdapter(Annotation annotation) {
+        return annotation instanceof PostMapping;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.csp.github.rabc.handler;
 import com.csp.github.common.utils.StrUtils;
 import com.csp.github.resource.collection.Collectors;
 import com.csp.github.resource.collection.ResourceProperties;
+import com.csp.github.resource.protobuf.ProtobufMessageListenerAdapter;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -13,7 +14,6 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
 /**
  * @author 陈少平
@@ -31,8 +31,8 @@ public class ResourceHandler {
      */
     @Bean
     @ConditionalOnMissingBean(name = "resourceCollectionListener")
-    MessageListenerAdapter resourceCollectionListener() {
-        return new MessageListenerAdapter((MessageListener) (message, pattern) -> {
+    ProtobufMessageListenerAdapter resourceCollectionListener() {
+        return new ProtobufMessageListenerAdapter((MessageListener) (message, pattern) -> {
             if (StrUtils.bytes2Str(pattern).equals(ResourceProperties.DEFAULT_CHANNEL)) {
                 log.info("资源：{}", message.toString());
             }

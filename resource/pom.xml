@@ -62,27 +62,14 @@
 
 
         <dependency>
-            <groupId>com.dyuproject.protostuff</groupId>
+            <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.dyuproject.protostuff</groupId>
+            <groupId>io.protostuff</groupId>
             <artifactId>protostuff-runtime</artifactId>
         </dependency>
 
     </dependencies>
-
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.csp.github</groupId>
-                <artifactId>dependency</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>

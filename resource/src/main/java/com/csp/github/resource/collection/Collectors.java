@@ -2,7 +2,7 @@ package com.csp.github.resource.collection;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.resource.annotation.ResourceEntity;
-import com.csp.github.resource.config.ProtobufRedisTemplate;
+import com.csp.github.resource.protobuf.ProtobufRedisTemplate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +19,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
@@ -66,15 +65,13 @@ public class Collectors implements BeanPostProcessor, ApplicationContextAware, C
             log.info("资源收集线程：{}, 开启", threadName);
 
             Set<ResourceEntity> array = new HashSet<>();
-            RedisTemplate redisTemplate = ac.getBean(ProtobufRedisTemplate.class);
+            StringRedisTemplate redisTemplate = ac.getBean(StringRedisTemplate.class);
+            ProtobufRedisTemplate bean = ac.getBean(ProtobufRedisTemplate.class);
             try {
                 resourceProperties.getCollectionList()
                         .forEach(strategy -> array.addAll(strategy.collectionStrategy(this.list, contextPath)));
-                String string = JSONObject.toJSONString(array);
-//                redisTemplate.convertAndSend(resourceProperties.getSendChannel(), string);
-                redisTemplate.opsForValue().set("haha", array);
-                Object haha = redisTemplate.opsForValue().get("haha");
-                log.info("收集到的资源：{}", string);
+                redisTemplate.convertAndSend(resourceProperties.getSendChannel(), JSONObject.toJSONString(array));
+                log.info("收集到的资源：{}", JSONObject.toJSONString(array));
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("收集资源失败！{}", e.getMessage());

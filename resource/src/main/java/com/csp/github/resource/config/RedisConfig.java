@@ -1,12 +1,7 @@
 package com.csp.github.resource.config;
 
-import com.csp.github.resource.annotation.ResourceEntity;
-import com.csp.github.resource.config.ProtobufSerializer.SerializeWrap;
-import com.dyuproject.protostuff.LinkedBuffer;
-import com.dyuproject.protostuff.ProtobufIOUtil;
-import com.dyuproject.protostuff.ProtostuffIOUtil;
-import com.dyuproject.protostuff.Schema;
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
+import com.csp.github.resource.protobuf.ProtobufRedisTemplate;
+import com.csp.github.resource.protobuf.ProtobufSerializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,26 +41,15 @@ public class RedisConfig {
     @ConditionalOnMissingBean
     public ProtobufRedisTemplate protobufRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         ProtobufRedisTemplate template = new ProtobufRedisTemplate(redisConnectionFactory);
-
+        ProtobufSerializer<Object> serializer = new ProtobufSerializer<>();
         template.setKeySerializer(RedisSerializer.string());
-        template.setValueSerializer(new ProtobufSerializer<>());
+        template.setValueSerializer(serializer);
 
         template.setHashKeySerializer(RedisSerializer.string());
-        template.setHashValueSerializer(new ProtobufSerializer<>());
+        template.setHashValueSerializer(serializer);
 
         template.afterPropertiesSet();
         return template;
     }
-
-    public static void main(String[] args) {
-        ResourceEntity resourceEntity = new ResourceEntity().setDescription("qwqwe").setVersion(1).setName("qweqw");
-        Schema<ProtobufSerializer.SerializeWrap> schema = RuntimeSchema.createFrom(ProtobufSerializer.SerializeWrap.class);
-        LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
-        byte [] bytes = ProtobufIOUtil.toByteArray(new ProtobufSerializer.SerializeWrap(resourceEntity), schema, buffer);
-
-        ProtobufSerializer.SerializeWrap warp = new ProtobufSerializer.SerializeWrap();
-
-        ProtostuffIOUtil.mergeFrom(bytes, warp, schema);
-        System.out.println(warp.getObj());
-    }
 }
+

@@ -26,7 +26,7 @@
         <fastjson.version>1.2.62</fastjson.version>
         <swagger.version>2.9.2</swagger.version>
         <swagger.anootation>1.5.20</swagger.anootation>
-        <protobuf.version>1.1.5</protobuf.version>
+        <protobuf.version>1.6.2</protobuf.version>
 
         <csp.resource.version>1.0-SNAPSHOT</csp.resource.version>
         <csp.common.version>1.0-SNAPSHOT</csp.common.version>
@@ -124,12 +124,12 @@
             </dependency>
 
             <dependency>
-                <groupId>com.dyuproject.protostuff</groupId>
+                <groupId>io.protostuff</groupId>
                 <artifactId>protostuff-core</artifactId>
                 <version>${protobuf.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dyuproject.protostuff</groupId>
+                <groupId>io.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protobuf.version}</version>
             </dependency>

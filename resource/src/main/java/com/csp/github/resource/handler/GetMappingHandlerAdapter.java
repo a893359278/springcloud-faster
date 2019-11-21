@@ -7,17 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author 陈少平
  * @date 2019-11-16 19:07
  */
-public class GetMappingHandlerAdapter implements MappingHandlerAdapter{
-
-    private GetMapping r;
+public class GetMappingHandlerAdapter extends AbstractMappingHandlerAdapter<GetMapping>{
 
     @Override
-    public boolean adapter(Annotation annotation) {
-        if (commonAdapter(annotation) && annotation instanceof GetMapping) {
-             r = (GetMapping) annotation;
-             return true;
-        }
-        return false;
+    public boolean doAdapter(Annotation annotation) {
+        return annotation instanceof GetMapping;
     }
 
     @Override
