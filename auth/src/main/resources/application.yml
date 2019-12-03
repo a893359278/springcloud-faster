@@ -30,3 +30,7 @@ spring:
     port: 6379
   application:
     name: auth-service
+  security:
+    oauth2:
+      jwt:
+        signingKey: csp123

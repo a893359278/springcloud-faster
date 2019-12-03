@@ -1,4 +1,4 @@
-package com.csp.github.starter;
+package com.csp.github.starter.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

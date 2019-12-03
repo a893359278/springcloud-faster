@@ -8,7 +8,7 @@ public class StrUtils {
 
     private StrUtils(){}
 
-    private static final String utf8 = "UTF-8";
+    public static final String utf8 = "UTF-8";
 
     public static String bytes2Str(byte[] bytes) {
         try {

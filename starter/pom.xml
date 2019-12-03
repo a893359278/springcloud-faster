@@ -60,6 +60,16 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.csp.github</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
 
     </dependencies>
 

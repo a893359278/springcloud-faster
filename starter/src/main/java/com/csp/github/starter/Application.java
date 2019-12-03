@@ -1,5 +1,6 @@
 package com.csp.github.starter;
 
+import com.csp.github.starter.annotation.StarterApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.web.bind.annotation.RestController;
 

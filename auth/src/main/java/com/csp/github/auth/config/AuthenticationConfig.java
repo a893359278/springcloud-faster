@@ -1,9 +1,10 @@
 package com.csp.github.auth.config;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -46,7 +47,11 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
 
     // 2、配置如何发放令牌，如何管理令牌
     // 配置使用 jwt 令牌服务
-    String signKey = "qwe123!";
+    /**
+     * jwt 对称加密密钥
+     */
+    @Value("${spring.security.oauth2.jwt.signingKey:csp123}")
+    private String signingKey;
     @Resource(name = "accessTokenConverter")
     JwtAccessTokenConverter accessTokenConverter;
     @Bean
@@ -60,7 +65,7 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(signKey);
+        converter.setSigningKey(signingKey);
         return converter;
     }
     // 配置令牌服务
@@ -72,9 +77,8 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
 
         // 为了能够使用 jwt 令牌服务，这里需要增强令牌管理服务
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        enhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter));
+        enhancerChain.setTokenEnhancers(Collections.singletonList(accessTokenConverter));
         tokenServices.setTokenEnhancer(enhancerChain);
-
 
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(10));
         tokenServices.setRefreshTokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1));
