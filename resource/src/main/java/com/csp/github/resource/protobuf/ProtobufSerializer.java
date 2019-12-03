@@ -4,8 +4,6 @@ package com.csp.github.resource.protobuf;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
-import io.protostuff.runtime.DefaultIdStrategy;
-import io.protostuff.runtime.IdStrategy;
 import io.protostuff.runtime.RuntimeSchema;
 import java.util.Objects;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -19,8 +17,6 @@ import org.springframework.data.redis.serializer.SerializationException;
  */
 public class ProtobufSerializer<T> implements RedisSerializer<T> {
 
-    static final DefaultIdStrategy STRATEGY = new DefaultIdStrategy(IdStrategy.DEFAULT_FLAGS |
-            IdStrategy.ALLOW_NULL_ARRAY_ELEMENT);
     private static final Schema<SerializeWrap> SERIALIZE_WRAP_SCHEMA = RuntimeSchema.getSchema(SerializeWrap.class);
 
     @Override

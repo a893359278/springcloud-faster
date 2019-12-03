@@ -1,4 +1,4 @@
-package com.csp.github.resource.config;
+package com.csp.github.resource.autoconfig;
 
 import com.csp.github.resource.protobuf.ProtobufRedisTemplate;
 import com.csp.github.resource.protobuf.ProtobufSerializer;

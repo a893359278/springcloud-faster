@@ -1,5 +1,22 @@
 server:
   port: 8001
-resources:
-  filter:
-    enable: true
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/rabc_admin?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:8769
+  application:
+    name: rabc-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS

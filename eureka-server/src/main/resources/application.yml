@@ -1,0 +1,27 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: localhost
+    # 向服务注册中心注册时，使用 IP 地址 而不是域名
+    prefer-ip-address: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  # 关闭自我保护
+  server:
+    enable-self-preservation: true
+spring:
+  application:
+    name: spring-cloud-eureka-server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

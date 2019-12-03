@@ -17,6 +17,8 @@
 
         <spring.boot.version>2.1.10.RELEASE</spring.boot.version>
         <spring.cloud.version>Greenwich.SR3</spring.cloud.version>
+        <spring.security.oauth.version>2.3.4.RELEASE</spring.security.oauth.version>
+
 
         <lombok.version>1.16.20</lombok.version>
         <druid.version>1.1.21</druid.version>
@@ -27,6 +29,9 @@
         <swagger.version>2.9.2</swagger.version>
         <swagger.anootation>1.5.20</swagger.anootation>
         <protobuf.version>1.6.2</protobuf.version>
+        <feign-form.version>3.8.0</feign-form.version>
+        <hutool.version>5.0.6</hutool.version>
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
 
         <csp.resource.version>1.0-SNAPSHOT</csp.resource.version>
         <csp.common.version>1.0-SNAPSHOT</csp.common.version>
@@ -132,6 +137,61 @@
                 <groupId>io.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protobuf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+                <version>${spring.security.oauth.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>io.github.openfeign.form</groupId>
+                <artifactId>feign-form</artifactId>
+                <version>${feign-form.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.openfeign.form</groupId>
+                <artifactId>feign-form-spring</artifactId>
+                <version>${feign-form.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-crypto</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-poi</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-system</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring-boot-admin.version}</version>
             </dependency>
 
         </dependencies>

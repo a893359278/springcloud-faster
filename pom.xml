@@ -6,6 +6,7 @@
 
     <groupId>com.csp.github</groupId>
     <artifactId>framework</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <modules>
@@ -18,6 +19,8 @@
         <module>rabc</module>
         <module>zuul</module>
         <module>eureka-server</module>
+        <module>log</module>
+        <module>boot-admin</module>
     </modules>
 
 </project>
