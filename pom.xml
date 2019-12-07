@@ -16,7 +16,6 @@
         <module>eureka-server</module>
         <module>boot-admin</module>
         <module>base</module>
-        <module>zxct</module>
     </modules>
 
 </project>
