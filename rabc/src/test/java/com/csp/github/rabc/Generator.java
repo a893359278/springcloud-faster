@@ -55,8 +55,8 @@ public class Generator {
     static final String MAPPER_LOCATION = "/src/main/resources/mapper";
     // 表名
     static final String [] TABLES = {
-        "admin_user", "menu", "resource", "role_resource_relation",
-            "role", "user_resource_relation", "user_role_relation"
+        "admin_user", "menu", "permission", "role_permission_relation",
+            "role", "user_permission_relation", "user_role_relation"
     };
 
     @Test

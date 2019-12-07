@@ -8,8 +8,6 @@ import com.csp.github.auth.hanlder.AuthenticationJsonEntryPoint;
 import com.csp.github.auth.hanlder.AuthenticationSuccessJsonHandler;
 import com.csp.github.auth.hanlder.LogoutSuccessJsonHandler;
 import com.csp.github.auth.provider.SmsAuthenticationProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -85,22 +83,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().accessDeniedHandler(accessDeniedJsonHandler());
     }
 
-    // springboot 默认加载 filter 组件，这里又配置了 bean，因此被加载2次
-    // 这里的配置则是为了取消 自动加载的 filter 组件。
-    @Bean
-    public FilterRegistrationBean registrationBean1(@Qualifier("smsAuthenticationFilter") SmsAuthenticationFilter filter) {
-        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
-        bean.setEnabled(false);
-        return bean;
-    }
-    @Bean
-    public FilterRegistrationBean registrationBean2(@Qualifier("verificationCodeAuthenticationFilter") VerificationCodeAuthenticationFilter filter) {
-        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
-        bean.setEnabled(false);
-        return bean;
-    }
-
-
     // 装配自己的过滤器
     @Bean
     public SmsAuthenticationFilter smsAuthenticationFilter() throws Exception {
@@ -121,10 +103,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     // 2、定义用户信息服务（查询用户信息）
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService();
+    @Bean("rabcUserDetailService")
+    public UserDetailsService rabcUserDetailsService() {
+        return new RabcUserDetailsService();
     }
 
     // 3、配置加密策略
@@ -161,7 +142,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setUserDetailsService(rabcUserDetailsService());
         return daoAuthenticationProvider;
     }
 }

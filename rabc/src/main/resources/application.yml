@@ -20,3 +20,10 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+hystrix:
+  metrics:
+    enabled: true
+
+feign:
+  hystrix:
+    enabled: true

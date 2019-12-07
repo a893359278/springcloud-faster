@@ -29,12 +29,11 @@ public class VerificationCodeAuthenticationFilter extends UsernamePasswordAuthen
             throws AuthenticationException {
 
         String imageCode = request.getParameter(IMAGE_CODE);
+        System.out.println(imageCode);
         if (Objects.isNull(imageCode) || "".equals(imageCode)) {
             throw new AuthenticationServiceException("验证码不能为空！");
         }
-        String parameter = getUsernameParameter();
         // todo 获取验证码。。。
-
         return super.attemptAuthentication(request, response);
     }
 

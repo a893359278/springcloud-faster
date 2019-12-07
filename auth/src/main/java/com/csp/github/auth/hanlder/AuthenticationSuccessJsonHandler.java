@@ -1,6 +1,9 @@
 package com.csp.github.auth.hanlder;
 
+import com.alibaba.fastjson.JSONObject;
+import com.csp.github.common.entity.Result;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +20,8 @@ public class AuthenticationSuccessJsonHandler implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        response.getWriter().write("{code:200}");
+
+        PrintWriter writer = response.getWriter();
+        writer.write(JSONObject.toJSONString(Result.ok()));
     }
 }

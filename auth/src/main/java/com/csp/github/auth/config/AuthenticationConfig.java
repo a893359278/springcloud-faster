@@ -65,7 +65,7 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(signingKey);
+        converter.setSigningKey("13123");
         return converter;
     }
     // 配置令牌服务
@@ -99,15 +99,15 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
         return new JdbcAuthorizationCodeServices(dataSource);
     }
 
-    @Resource
-    private UserDetailsService userDetailsService;
+    @Resource(name = "rabcUserDetailService")
+    private UserDetailsService rabcUserDetailService;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .authenticationManager(authenticationManager) // 密码模式
                 .authorizationCodeServices(authorizationCodeServices) // 授权码模式
-                .userDetailsService(userDetailsService)
+                .userDetailsService(rabcUserDetailService)
                 .approvalStore(approvalStore())
                 .tokenStore(tokenStore())
                 .tokenServices(tokenServices())

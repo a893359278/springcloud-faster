@@ -1,6 +1,6 @@
 package com.csp.github.rabc.handler;
 
-import com.csp.github.common.utils.StrUtils;
+import com.csp.github.base.common.utils.ConvertUtils;
 import com.csp.github.resource.collection.Collectors;
 import com.csp.github.resource.collection.ResourceProperties;
 import com.csp.github.resource.protobuf.ProtobufMessageListenerAdapter;
@@ -33,7 +33,7 @@ public class ResourceHandler {
     @ConditionalOnMissingBean(name = "resourceCollectionListener")
     ProtobufMessageListenerAdapter resourceCollectionListener() {
         return new ProtobufMessageListenerAdapter((MessageListener) (message, pattern) -> {
-            if (StrUtils.bytes2Str(pattern).equals(ResourceProperties.DEFAULT_CHANNEL)) {
+            if (ConvertUtils.bytes2Str(pattern).equals(ResourceProperties.DEFAULT_CHANNEL)) {
                 log.info("资源：{}", message.toString());
             }
         });

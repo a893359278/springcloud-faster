@@ -13,6 +13,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        // todo 做认证
         return new SmsAuthenticationToken(authentication.getPrincipal().toString(), authentication.getCredentials().toString());
     }
 
