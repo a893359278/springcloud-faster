@@ -2,7 +2,6 @@ package com.csp.github.resource.handler;
 
 import java.lang.annotation.Annotation;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author 陈少平

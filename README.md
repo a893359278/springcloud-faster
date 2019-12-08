@@ -27,7 +27,7 @@ resource 工作流程：
 目前过滤把有 Controller, RestController 注解的类过滤出来，支持自定义
 + 收集
 
-收集默认是收集带有 @ResourceCollection 注解的，也可以收集 swagger 的注解。 支持自定义
+收集默认是收集带有 @ApiOperation 注解的。收集到的权限会被封装为 ResourceEntity 实体。 支持自定义
 + 处理收集到的资源（需要自己处理）
 
 这部分需要自己处理，目前使用的是 redis 的发布订阅，比较简单（缺陷当然有很多，先快速实现功能）
