@@ -13,6 +13,23 @@
 ### 待开发
 + 日志配置统一配置
 + redis 扩展，分布式锁
++ docker 容器化部署
++ spring security 集成到 网关（目前只是简单整合 spring security ）
+
+
+## 模块
++ dependency：统一依赖
++ parent：统一的父 pom
++ starter：快速开发 web 继承的父 pom
++ common：通用包，定义全局工具类。等等。。。
++ fastjson：全局配置 fastjson
++ log：全局配置日志
++ resource：权限自动收集
++ swagger：全局 swagger 配置
++ web：openFeign 的 fallFactory 统一配置，web开发注解的基本封装
+
++ auth：spring security。准备集成进 网关（待开发）
++ rabc：权限模块，架子已搭建完成，待完善
 
 
 ### rabc 模块
