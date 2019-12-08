@@ -20,6 +20,7 @@
 
 ### 权限自动收集  base.resource
 resource 目前具备自动收集项目中定义的权限注解。@ResourceCollection， 还支持 Swagger 权限的收集
+
 resource 工作流程：
 + 过滤
 
