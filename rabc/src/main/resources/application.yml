@@ -8,15 +8,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: rabc-service
-#
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: '*'
-#  endpoint:
-#    health:
-#      show-details: ALWAYS
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
 
 # fegin
 feign:
