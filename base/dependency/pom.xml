@@ -36,6 +36,7 @@
         <csp.resource.version>1.0-SNAPSHOT</csp.resource.version>
         <csp.common.version>1.0-SNAPSHOT</csp.common.version>
         <csp.web.version>1.0-SNAPSHOT</csp.web.version>
+        <csp.swagger.version>1.0-SNAPSHOT</csp.swagger.version>
     </properties>
 
     <dependencyManagement>
@@ -58,8 +59,11 @@
                 <artifactId>common</artifactId>
                 <version>${csp.common.version}</version>
             </dependency>
-
-
+            <dependency>
+                <groupId>com.csp.github.base</groupId>
+                <artifactId>swagger</artifactId>
+                <version>${csp.swagger.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>

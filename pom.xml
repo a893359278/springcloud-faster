@@ -14,8 +14,8 @@
         <module>rabc</module>
         <module>zuul</module>
         <module>eureka-server</module>
-        <module>boot-admin</module>
         <module>base</module>
+        <module>boot-admin-server</module>
     </modules>
 
 </project>

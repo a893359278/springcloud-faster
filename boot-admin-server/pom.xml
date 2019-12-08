@@ -10,7 +10,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>boot-admin</artifactId>
+    <artifactId>boot-admin-server</artifactId>
 
     <dependencies>
         <dependency>

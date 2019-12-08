@@ -8,11 +8,9 @@ management:
         include: '*'
   endpoint:
     health:
-      show-details:
+      show-details: ALWAYS
 zuul:
   routes:
-    auth-service: /auth/**
-    xxl-job-admin: /xxl/**
     rabc-service: /rabc/**
   ignored-services: '*'
 spring:

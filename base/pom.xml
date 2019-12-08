@@ -19,5 +19,6 @@
         <module>resource</module>
         <module>common</module>
         <module>web</module>
+        <module>swagger</module>
     </modules>
 </project>

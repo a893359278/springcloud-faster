@@ -11,6 +11,10 @@ public class ServiceException extends BaseException{
     public ServiceException() {
     }
 
+    public ServiceException(String msg) {
+        super(DefaultResultType.SERVICE_EXCEPTION.getCode(), msg);
+    }
+
     public ServiceException(String code, String msg) {
         super(code, msg);
     }
