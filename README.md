@@ -8,7 +8,8 @@
 + 权限的自动收集
 + spring-security 整合，多登陆方式。
 + 基于 rabc 的权限模块
++ swagger starter
 ### 待开发
 + 日志配置统一配置
 + json 统一配置
-+ redis 扩展，分布式锁。
++ redis 扩展，分布式锁
