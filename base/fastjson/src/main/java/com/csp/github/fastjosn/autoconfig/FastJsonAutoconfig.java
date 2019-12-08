@@ -1,4 +1,4 @@
-package com.csp.github.rabc.config;
+package com.csp.github.fastjosn.autoconfig;
 
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -7,6 +7,7 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +15,13 @@ import org.springframework.http.MediaType;
 
 /**
  * @author 陈少平
- * @date 2019-12-08 11:24
+ * @date 2019-12-08 17:36
  */
 @Configuration
-public class FastJsonConfiguration {
+public class FastJsonAutoconfig {
 
     @Bean
+    @ConditionalOnMissingBean
     public HttpMessageConverters fastJsonHttpMessageConverters() {
         //1.需要定义一个convert转换消息的对象;
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new

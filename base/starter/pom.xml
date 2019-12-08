@@ -24,8 +24,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>com.csp.github.base</groupId>
             <artifactId>fastjson</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
