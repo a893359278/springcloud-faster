@@ -2,6 +2,17 @@
 + 见过很多的 springcloud 的项目，通用的配置类，从这个项目复制到另外一个项目
 + 更加快速开发 springcloud。不需要添加太多的依赖，简称再封装
 
+
+## 有什么特别的？
++ 统一的 feign 调用异常处理，
+```java
+@FeignClient(fallbackFactory=DefaultHystrixFallbackHandlerFactory.class);
+```
++ client 打包方式，比如服务A  需要调用服务B的 接口，那么我们只需要将 服务B 打包成 client（jar包）。服务A依赖服务B打包的 client。
+那么在服务A 中即可 feign 调用 服务B 暴露出来的接口
+
+
+
 ## 有什么功能
 ### 已完成
 + 权限的自动收集

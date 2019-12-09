@@ -29,7 +29,7 @@ public class EurekaServerApplication {
         eurekaServerConfigBean.setEnableSelfPreservation(false);
     }
 
-    @GetMapping("/disable/self-preservation\"")
+    @GetMapping("/disable/self-preservation")
     public void enableSelfPreservation() {
         eurekaServerConfigBean.setEnableSelfPreservation(true);
     }

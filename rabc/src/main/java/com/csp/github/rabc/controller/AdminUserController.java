@@ -32,15 +32,21 @@ public class AdminUserController {
     @ApiOperation(value = "获取用户信息，包括权限，角色")
     @GetMapping("/{id}")
     public AdminUser userFullInfo(@PathVariable Long id) {
-        AdminUser adminUser = userService.getUserInfoWithRolesAndPermissions(id);
-        System.out.println(adminUser);
-        return adminUser;
+        AdminUser info = userService.getUserInfoWithRolesAndPermissions(id);
+        System.out.println(info);
+        return info;
     }
 
     @ApiOperation(value = "用户注册")
     @PostMapping
     public AdminUser register(@RequestBody AdminUser user) {
         return userService.register(user);
+    }
+
+    @ApiOperation(value = "错误是")
+    @GetMapping("/tt")
+    public String tt() {
+        return "i am adminUser";
     }
 
 }

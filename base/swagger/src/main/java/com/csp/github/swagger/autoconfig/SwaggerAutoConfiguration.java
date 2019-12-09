@@ -39,7 +39,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ConditionalOnClass({EnableSwagger2.class})
 @ConditionalOnWebApplication
 @EnableConfigurationProperties({SwaggerProperties.class})
-@ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true, havingValue = "true")
 @Profile({"swagger.excluded-env:!prod"})
 @Configuration
 @EnableSwagger2

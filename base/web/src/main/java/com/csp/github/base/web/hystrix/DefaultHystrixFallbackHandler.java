@@ -1,4 +1,4 @@
-package com.csp.github.base.web.config;
+package com.csp.github.base.web.hystrix;
 
 import com.csp.github.base.common.entity.Result;
 import java.lang.reflect.Method;
@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.HystrixFallbackHandler;
  */
 public class DefaultHystrixFallbackHandler extends HystrixFallbackHandler {
 
-    public DefaultHystrixFallbackHandler(Class<?> feignClientClass, Throwable cause) {
+    DefaultHystrixFallbackHandler(Class<?> feignClientClass, Throwable cause) {
         super(feignClientClass, cause);
     }
 

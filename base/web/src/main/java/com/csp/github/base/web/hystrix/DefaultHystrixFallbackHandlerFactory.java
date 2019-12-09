@@ -1,4 +1,4 @@
-package com.csp.github.base.web.config;
+package com.csp.github.base.web.hystrix;
 
 import org.springframework.cloud.openfeign.HystrixFallbackHandler;
 import org.springframework.cloud.openfeign.HystrixFallbackHandlerFactory;

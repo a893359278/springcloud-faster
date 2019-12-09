@@ -5,5 +5,5 @@ package org.springframework.cloud.openfeign;
  * @date 2019-12-06 21:18
  */
 public interface HystrixFallbackHandlerFactory {
-    public HystrixFallbackHandler createHandler(Class<?> feignClientClass, Throwable cause);
+    HystrixFallbackHandler createHandler(Class<?> feignClientClass, Throwable cause);
 }
