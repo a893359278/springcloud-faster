@@ -15,6 +15,6 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(value = "rest.enable", matchIfMissing = true, havingValue = "true")
 @Import({RestResultResponseAdvice.class, DefaultGlobalExceptionHandlerAdvice.class})
 @Configuration
-public class WebStarterConfiguration {
+public class WebStarterAutoConfiguration {
 
 }

@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.csp.github.base.web.autoconfig.WebStarterConfiguration,com.csp.github.base.web.feign.DefaultFeignClientsConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.csp.github.base.web.autoconfig.WebStarterAutoConfiguration,com.csp.github.base.web.feign.DefaultFeignClientsConfiguration

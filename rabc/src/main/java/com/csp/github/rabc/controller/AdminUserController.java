@@ -33,7 +33,6 @@ public class AdminUserController {
     @GetMapping("/{id}")
     public AdminUser userFullInfo(@PathVariable Long id) {
         AdminUser info = userService.getUserInfoWithRolesAndPermissions(id);
-        System.out.println(info);
         return info;
     }
 

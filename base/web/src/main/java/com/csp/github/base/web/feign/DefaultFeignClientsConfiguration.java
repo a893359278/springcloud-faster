@@ -24,6 +24,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 装配自己的 解码器，以及 fallbackFactory
  * @author 陈少平
  * @date 2019-12-06 22:41
  */
