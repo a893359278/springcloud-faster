@@ -98,19 +98,37 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 
 ## 模块
 
-+ dependency：统一依赖
-+ parent：统一的父 pom
-+ starter：快速开发 web 继承的父 pom
-+ common：通用包，定义全局工具类。等等。。。
-+ fastjson：全局配置 fastjson
-+ log：全局配置日志
-+ resource：权限自动收集
-+ swagger：全局 swagger 配置
-+ web：openFeign 的 fallFactory 统一配置，web开发注解的基本封装
-+ auth：spring security。准备集成进 网关（待开发）
-+ rabc：权限模块，架子已搭建完成，待完善
+### dependency 模块
 
+统一依赖使用
 
+### parent 模块
+
+统一 nexus 的地址
+
+### starter 模块
+
+依赖各个模块，内置各个环境的打包方式。只需继承 starter 即可快速开发业务，无需过多关系配置上的事情。
+
+###  common 模块
+
+统一项目的工具类
+
+### fastjson 模块
+
+统一配置 fastJson，比如 Long 精度丢失问题
+
+### log 模块
+
+全局配置日志
+
+### swagger 模块
+
+只需使用 @EnableSwagger 注解，即可拥有 swagger 能力（模块中没有依赖 ui 。需要自己添加）
+
+### auth 模块
+
+提供 oauth2.0，统一鉴权，准备集成到网关。
 
 ### web 模块
 
