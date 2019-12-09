@@ -16,7 +16,6 @@
         <module>eureka-server</module>
         <module>base</module>
         <module>boot-admin-server</module>
-        <module>cs</module>
     </modules>
 
 </project>
