@@ -83,7 +83,7 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 
 + 服务间的依赖，只需打包成 client，然后引入即可，无需重复定义同样的实体类。 client 打包机制，只会把对应的实体， feign 打包进去。（jar 包也会被打包进去，需要自己手动排除）
 
-![image-20191210001927847](/Users/chenshaoping/Library/Application Support/typora-user-images/image-20191210001927847.png)
+![image-20191210001927847](https://github.com/a893359278/springcloud-faster/blob/master/images/image-20191210001927847.png)
 
 ```maven
  <dependency>
