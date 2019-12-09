@@ -158,7 +158,7 @@ public AdminUser tt() {
 
 可以直接查看到返回的数据对象的数据格式。
 
-![image-20191210000616099](/Users/chenshaoping/Library/Application Support/typora-user-images/image-20191210000616099.png)
+![image-20191210000616099](https://github.com/a893359278/springcloud-faster/blob/master/images/image-20191210000616099.png)
 
 
 
