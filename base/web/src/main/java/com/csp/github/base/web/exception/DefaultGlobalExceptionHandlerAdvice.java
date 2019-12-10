@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -85,7 +87,8 @@ public class DefaultGlobalExceptionHandlerAdvice {
             bindResult = ((MethodArgumentNotValidException) ex).getBindingResult();
         }
         if (Objects.nonNull(bindResult) && bindResult.hasErrors()) {
-            String msg = bindResult.getAllErrors().get(0).getDefaultMessage();
+            FieldError fieldError = bindResult.getFieldError();
+            String msg = fieldError.getField() + fieldError.getDefaultMessage();
             return Result.fail(DefaultResultType.PARAM_INVALID.getCode(), msg);
         }
         return Result.fail(DefaultResultType.PARAM_INVALID.getCode(), DefaultResultType.PARAM_INVALID.getMsg());

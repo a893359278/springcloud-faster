@@ -4,9 +4,10 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,7 +33,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
  */
 @Configuration
 @EnableAuthorizationServer // 配置授权服务器
-public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter implements EnvironmentAware {
+
+
+    private Environment environment;
 
     // 1、配置哪些客户端是允许被授权的。
     // 配置哪些客户端是允许被授权的。
@@ -47,16 +51,11 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
 
     // 2、配置如何发放令牌，如何管理令牌
     // 配置使用 jwt 令牌服务
-    /**
-     * jwt 对称加密密钥
-     */
-    @Value("${spring.security.oauth2.jwt.signingKey:csp123}")
-    private String signingKey;
-    @Resource(name = "accessTokenConverter")
-    JwtAccessTokenConverter accessTokenConverter;
+//    @Resource(name = "accessTokenConverter")
+//    JwtAccessTokenConverter accessTokenConverter;
     @Bean
     public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter);
+        return new JwtTokenStore(accessTokenConverter());
     }
     @Bean
     public ApprovalStore approvalStore() {
@@ -65,7 +64,7 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("13123");
+        converter.setSigningKey(environment.getProperty("spring.security.oauth2.jwt.signingKey", "chenshaoping123"));
         return converter;
     }
     // 配置令牌服务
@@ -77,14 +76,13 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
 
         // 为了能够使用 jwt 令牌服务，这里需要增强令牌管理服务
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        enhancerChain.setTokenEnhancers(Collections.singletonList(accessTokenConverter));
+        enhancerChain.setTokenEnhancers(Collections.singletonList(accessTokenConverter()));
         tokenServices.setTokenEnhancer(enhancerChain);
 
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(10));
         tokenServices.setRefreshTokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1));
         return tokenServices;
     }
-
 
     // 3、令牌访问端点配置
     // 配置授权类型： authenticationManager，userDetailService，
@@ -122,4 +120,8 @@ public class AuthenticationConfig extends AuthorizationServerConfigurerAdapter {
                 .allowFormAuthenticationForClients();    // 表单认证
     }
 
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 }

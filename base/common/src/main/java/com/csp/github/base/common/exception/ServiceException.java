@@ -1,6 +1,7 @@
 package com.csp.github.base.common.exception;
 
 import com.csp.github.base.common.entity.DefaultResultType;
+import com.csp.github.base.common.entity.ResultType;
 
 /**
  * @author 陈少平
@@ -19,7 +20,7 @@ public class ServiceException extends BaseException{
         super(code, msg);
     }
 
-    public ServiceException(DefaultResultType defaultResultType) {
+    public ServiceException(ResultType defaultResultType) {
         super(defaultResultType);
     }
 }

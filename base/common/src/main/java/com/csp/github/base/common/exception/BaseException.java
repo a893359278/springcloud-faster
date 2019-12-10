@@ -1,6 +1,7 @@
 package com.csp.github.base.common.exception;
 
 import com.csp.github.base.common.entity.DefaultResultType;
+import com.csp.github.base.common.entity.ResultType;
 
 /**
  * @author 陈少平
@@ -22,7 +23,7 @@ public class BaseException extends RuntimeException{
         this.msg = msg;
     }
 
-    public BaseException(DefaultResultType defaultResultType) {
+    public BaseException(ResultType defaultResultType) {
         super(defaultResultType.getMsg());
         this.code = defaultResultType.getCode();
         this.msg = defaultResultType.getMsg();

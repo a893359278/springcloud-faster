@@ -19,6 +19,7 @@ import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -46,11 +47,13 @@ public class DefaultFeignClientsConfiguration implements WebMvcConfigurer {
     private ObjectFactory<HttpMessageConverters> messageConverters;
 
     @Bean
+    @Primary
     public Encoder feignFormEncoder () {
         return new SpringEncoder(messageConverters);
     }
 
     @Bean
+    @Primary
     public Decoder feignDecoder () {
         List<HttpMessageConverter<?>> springConverters =
                 messageConverters.getObject().getConverters();

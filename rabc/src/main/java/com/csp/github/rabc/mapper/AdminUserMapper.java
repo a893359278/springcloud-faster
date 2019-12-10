@@ -19,4 +19,11 @@ public interface AdminUserMapper extends BaseMapper<AdminUser> {
      * @return
      */
     AdminUser getUserInfoWithRolesAndPermissions(Long id);
+
+    /**
+     * 获取用户信息以及角色，权限
+     * @param username
+     * @return
+     */
+    AdminUser getUserInfo(String username);
 }

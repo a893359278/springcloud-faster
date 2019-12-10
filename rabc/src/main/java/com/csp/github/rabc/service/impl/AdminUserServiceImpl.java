@@ -37,6 +37,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     @Override
+    public AdminUser getUserInfoWithRolesAndPermissions(String username) {
+        return userMapper.getUserInfo(username);
+    }
+
+    @Override
     public AdminUser register(AdminUser user) {
 
         LambdaQueryWrapper<AdminUser> wrapper = new QueryWrapper<AdminUser>().lambda().eq(AdminUser::getUsername, user.getUsername());
@@ -47,7 +52,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
         String salt = BCrypt.gensalt();
         AdminUser adminUser = user.setSalt(salt)
-                .setPassword(new BCryptPasswordEncoder().encode(user.getPassword() + salt))
+                .setPassword(new BCryptPasswordEncoder().encode(user.getPassword()))
                 .setAccountNonExpired(false)
                 .setAccountNonLocked(false)
                 .setCreatedTime(LocalDateTime.now())
@@ -57,6 +62,12 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
                 .setUpdatedTime(LocalDateTime.now());
         save(adminUser);
         return adminUser;
+    }
+
+    @Override
+    public AdminUser getUserByUsername(String username) {
+        LambdaQueryWrapper<AdminUser> wrapper = new QueryWrapper<AdminUser>().lambda().eq(AdminUser::getUsername, username);
+        return this.getOne(wrapper);
     }
 
 

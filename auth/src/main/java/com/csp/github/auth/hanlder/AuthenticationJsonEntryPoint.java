@@ -2,7 +2,7 @@ package com.csp.github.auth.hanlder;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.auth.entity.AuthResultType;
-import com.csp.github.common.entity.Result;
+import com.csp.github.base.common.entity.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;

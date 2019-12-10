@@ -1,11 +1,14 @@
 package com.csp.github.auth.config;
 
-import com.csp.github.auth.entity.UserDo;
+import com.csp.github.auth.entity.AuthResultType;
+import com.csp.github.base.common.exception.ServiceException;
+import com.csp.github.rabc.client.AdminUserClient;
+import com.csp.github.rabc.entity.AdminUser;
+import com.csp.github.rabc.entity.Permission;
+import com.csp.github.rabc.entity.Role;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,15 +23,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class RabcUserDetailsService implements UserDetailsService {
 
     @Resource
-    private JdbcTemplate jdbcTemplate;
+    AdminUserClient adminUserClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        List<UserDo> list = jdbcTemplate.query("select * from `user` where `name` = ?", new Object[]{username}, new BeanPropertyRowMapper<>(UserDo.class));
-        UserDo userDo = list.get(0);
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_SB"));
-        return new User(userDo.getName(),  userDo.getPassword(), grantedAuthorities);
+        AdminUser user = adminUserClient.getUserFullInfoByUsername(username);
+        if (user == null) {
+            throw new ServiceException(AuthResultType.USERNAME_PASSWORD_INCORRECT);
+        }
+        String permissionPrefix = "PERMISSION_";
+        for (Permission permission : user.getPermissions()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(permissionPrefix + permission.getName()));
+        }
+        String rolePrefix = "ROLE_";
+        for (Role role : user.getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(rolePrefix + role.getCode()));
+        }
+
+        return new User(user.getUsername(),  user.getPassword(), grantedAuthorities);
     }
 }

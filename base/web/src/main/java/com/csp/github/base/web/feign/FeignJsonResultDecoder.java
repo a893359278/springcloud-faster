@@ -49,14 +49,23 @@ public class FeignJsonResultDecoder implements Decoder {
             return createResponse(null, response);
         }
         else {
-            Object result = this.decoder.decode(response, String.class);
-            Class cls = null;
-            try {
-                cls = Class.forName(type.getTypeName());
-            } catch (ClassNotFoundException e) {
-                throw new SaslException();
+            String typeName = type.getTypeName();
+            if (typeName.equals("java.lang.Void")) {
+                return this.decoder.decode(response, type);
             }
-            return JSONObject.parseObject(JSONObject.toJSONString(JSONObject.parseObject(result.toString(), Result.class).getData()), cls);
+            Result result = (Result) this.decoder.decode(response, Result.class);
+            String data = result.getData().toString();
+            if (data.equals("{}") || data.equals("[]")) {
+                return null;
+            } else {
+                Class cls;
+                try {
+                    cls = Class.forName(type.getTypeName());
+                } catch (ClassNotFoundException e) {
+                    throw new SaslException();
+                }
+                return JSONObject.parseObject(data, cls);
+            }
         }
     }
 

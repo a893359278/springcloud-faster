@@ -38,6 +38,7 @@
         <csp.web.version>1.0-SNAPSHOT</csp.web.version>
         <csp.swagger.version>1.0-SNAPSHOT</csp.swagger.version>
         <csp.fastjson.version>1.0-SNAPSHOT</csp.fastjson.version>
+        <csp.rabc.version>1.0-SNAPSHOT</csp.rabc.version>
     </properties>
 
     <dependencyManagement>
@@ -70,6 +71,12 @@
                 <groupId>com.csp.github.base</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${csp.fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.csp.github</groupId>
+                <artifactId>rabc</artifactId>
+                <version>${csp.rabc.version}</version>
             </dependency>
 
 

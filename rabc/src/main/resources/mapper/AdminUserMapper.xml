@@ -77,6 +77,43 @@
         WHERE u.id = #{id}
     </select>
 
+    <select id="getUserInfo" resultMap="BaseResultMap">
+        SELECT
+            u.*,
+            r.id as role_id,
+            r.code as role_code,
+            r.name as role_name,
+            r.description as role_description,
+            r.created_time as role_created_time,
+            r.updated_time as role_updated_time,
+            p.id as permission_id,
+            p.name as permission_name,
+            p.url as permission_url,
+            p.method as permission_method,
+            p.version as permission_version,
+            p.description as permission_description,
+            p.created_time as permission_created_time,
+            p.updated_time as permission_updated_time
+        FROM
+            `admin_user` u
+        LEFT JOIN
+            `user_role_relation` urr
+        ON
+            u.id = urr.user_id
+        LEFT JOIN
+            `role` r
+        ON
+            r.id = urr.role_id
+        LEFT JOIN
+            `role_permission_relation` rpr
+        ON
+            rpr.role_id = r.id
+        LEFT JOIN
+            `permission` p
+        ON
+            p.id = rpr.permission_id
+        WHERE u.username = #{username}
+    </select>
 
 
 </mapper>

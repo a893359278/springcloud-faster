@@ -2,7 +2,7 @@ package com.csp.github.auth.hanlder;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.auth.entity.AuthResultType;
-import com.csp.github.common.entity.Result;
+import com.csp.github.base.common.entity.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -25,6 +25,7 @@ public class AuthenticationFailureJsonHandler implements AuthenticationFailureHa
             throws IOException, ServletException {
         log.info("认证失败, 入参：{}", JSONObject.toJSONString(request.getParameterMap()));
         PrintWriter writer = response.getWriter();
-        writer.write(JSONObject.toJSONString(Result.fail(AuthResultType.AUTHENTICATION_FAIL)));
+        String s = JSONObject.toJSONString(Result.fail(AuthResultType.AUTHENTICATION_FAIL));
+        writer.write(s);
     }
 }

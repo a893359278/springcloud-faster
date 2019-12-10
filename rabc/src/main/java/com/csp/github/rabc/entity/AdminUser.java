@@ -1,11 +1,12 @@
 package com.csp.github.rabc.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.csp.github.base.common.annotation.Create;
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -31,7 +32,7 @@ public class AdminUser implements Serializable {
     /**
      * 用户id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ID_WORKER)
     @Null(groups = {Create.class})
     private Long id;
 
@@ -112,7 +113,9 @@ public class AdminUser implements Serializable {
     @Null(groups = {Create.class})
     private LocalDateTime updatedTime;
 
+    @TableField(exist = false)
     private List<Role> roles;
+    @TableField(exist = false)
     private List<Permission> permissions;
 
 }

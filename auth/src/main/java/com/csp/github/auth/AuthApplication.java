@@ -1,14 +1,14 @@
 package com.csp.github.auth;
 
+import com.csp.github.base.web.annotation.StarterApplication;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author 陈少平
  * @date 2019-11-20 22:23
  */
-@SpringBootApplication
+@StarterApplication
 public class AuthApplication {
 
     public static void main(String[] args) {

@@ -21,9 +21,24 @@ public interface IAdminUserService extends IService<AdminUser> {
     AdminUser getUserInfoWithRolesAndPermissions(Long id);
 
     /**
+     * 获取用户信息，以及角色，权限
+     * @return
+     */
+    AdminUser getUserInfoWithRolesAndPermissions(String username);
+
+    /**
      * 用户注册
      * @param user
      * @return
      */
     AdminUser register(AdminUser user);
+
+    /**
+     * 通过用户名获取用户
+     * @param username
+     * @return
+     */
+    AdminUser getUserByUsername(String username);
+
+
 }
