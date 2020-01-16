@@ -1,0 +1,51 @@
+server:
+  port: 8001
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/rabc_admin?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: tenant-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+# fegin
+feign:
+  hystrix:
+    enabled: true
+
+# mybatis-plus
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: ID_WORKER
+      logic-delete-value: 1
+      logic-not-delete-value: 2
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+      circuitBreaker:
+        enabled: true
+        requestVolumeThreshold: 3

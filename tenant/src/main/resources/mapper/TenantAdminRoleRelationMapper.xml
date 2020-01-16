@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csp.github.tenant.mapper.TenantAdminRoleRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.csp.github.tenant.entity.TenantAdminRoleRelation">
+        <id column="id" property="id" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="role_id" property="roleId" />
+    </resultMap>
+
+    <!--批量新增回写主键支持-->
+    <insert id="insertList">
+        INSERT INTO tenant_admin_role_relation (id,tenant_id, role_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (
+                #{item.id,jdbcType=BIGINT},
+                #{item.tenantId,jdbcType=BIGINT},
+                #{item.roleId,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+    <select id="getRoleList" resultMap="BaseResultMap">
+        select r.*
+        from tenant_admin_role_relation ar left join tenant_role r on ar.role_id = r.id
+        where ar.tenant_id = #{adminId}
+    </select>
+    <select id="getRolePermissionList" resultMap="com.asita.mall.tenant.mapper.UnitPermissionMapper.BaseResultMap">
+        select p.*
+        from tenant_admin_role_relation ar left join tenant_role r on ar.role_id = r.id
+            left join tenant_role_permission_relation rp on r.id = rp.role_id
+            left join tenant_permission p on rp.permission_id=p.id
+            where ar.tenant_id = #{adminId} and p.id is not null
+    </select>
+    <select id="getPermissionList" resultMap="com.asita.mall.tenant.mapper.UnitPermissionMapper.BaseResultMap">
+        SELECT
+            p.*
+        FROM
+            tenant_admin_role_relation ar
+            LEFT JOIN tenant_role r ON ar.role_id = r.id
+            LEFT JOIN tenant_role_permission_relation rp ON r.id = rp.role_id
+            LEFT JOIN tenant_permission p ON rp.permission_id = p.id
+        WHERE
+            ar.tenant_id = #{tenantId}
+            AND p.id IS NOT NULL
+            AND p.id NOT IN (
+                SELECT
+                    p.id
+                FROM
+                    tenant_admin_permission_relation pr
+                    LEFT JOIN tenant_permission p ON pr.permission_id = p.id
+                WHERE
+                    pr.type = - 1
+                    AND pr.tenant_id = #{tenantId}
+            )
+        UNION
+        SELECT
+            p.*
+        FROM
+            tenant_admin_permission_relation pr
+            LEFT JOIN tenant_permission p ON pr.permission_id = p.id
+        WHERE
+            pr.type = 1
+            AND pr.tenant_id = #{tenantId}
+    </select>
+
+</mapper>

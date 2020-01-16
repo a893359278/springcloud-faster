@@ -28,29 +28,14 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- 设置 nexus 地址 -->
-    <repositories>
-        <repository>
-            <id>maven-public</id>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://39.108.252.77:10001/nexus/repository/maven-public/</url>
-        </repository>
-    </repositories>
-
     <distributionManagement>
         <repository>
-            <id>myself</id>
-            <url>http://39.108.252.77:10001/nexus/repository/maven-releases/</url>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/116878-release-RJeAi8/</url>
         </repository>
         <snapshotRepository>
-            <id>myself</id>
-            <url>http://39.108.252.77:10001/nexus/repository/maven-snapshots/</url>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/116878-snapshot-uQ2lhH/</url>
         </snapshotRepository>
     </distributionManagement>
 

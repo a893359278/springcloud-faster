@@ -63,7 +63,7 @@ public class App {
 + 对于 feign，不需要写 fallback，只需 fallbackFactory 填 DefaultHystrixFallbackFactory 即可，并且 feign 的返回值，可直接填数据对象，无需包装为统一的业务对象。
 
 ```java
-@FeignClient(value = "rabc-service", path = "/adminUser", fallbackFactory = DefaultHystrixFallbackFactory.class)
+@FeignClient(value = tenant, path = "/adminUser", fallbackFactory = DefaultHystrixFallbackFactory.class)
 public interface RabcFeign {
     @GetMapping("/{id}")
     AdminUser userFullInfo(@PathVariable Long id);

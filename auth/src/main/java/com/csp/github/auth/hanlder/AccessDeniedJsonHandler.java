@@ -1,7 +1,7 @@
 package com.csp.github.auth.hanlder;
 
 import com.alibaba.fastjson.JSONObject;
-import com.csp.github.auth.entity.AuthResultType;
+import com.csp.github.base.common.entity.DefaultResultType;
 import com.csp.github.base.common.entity.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +25,6 @@ public class AccessDeniedJsonHandler implements AccessDeniedHandler {
             throws IOException, ServletException {
         log.info("访问拒绝, 入参：{}", JSONObject.toJSONString(request.getParameterMap()));
         PrintWriter writer = response.getWriter();
-        writer.write(JSONObject.toJSONString(Result.fail(AuthResultType.ACCESS_DENIED)));
+        writer.write(JSONObject.toJSONString(Result.fail(DefaultResultType.ACCESS_DENIED)));
     }
 }

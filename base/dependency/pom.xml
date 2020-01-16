@@ -32,13 +32,17 @@
         <feign-form.version>3.8.0</feign-form.version>
         <hutool.version>5.0.6</hutool.version>
         <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+        <rocketmq-spring-boot-version>2.0.2</rocketmq-spring-boot-version>
+        <jwt-version>0.9.0</jwt-version>
+
 
         <csp.resource.version>1.0-SNAPSHOT</csp.resource.version>
         <csp.common.version>1.0-SNAPSHOT</csp.common.version>
         <csp.web.version>1.0-SNAPSHOT</csp.web.version>
         <csp.swagger.version>1.0-SNAPSHOT</csp.swagger.version>
         <csp.fastjson.version>1.0-SNAPSHOT</csp.fastjson.version>
-        <csp.rabc.version>1.0-SNAPSHOT</csp.rabc.version>
+        <csp.redis.version>1.0-SNAPSHOT</csp.redis.version>
+        <csp.auth.version>1.0-SNAPSHOT</csp.auth.version>
     </properties>
 
     <dependencyManagement>
@@ -66,17 +70,20 @@
                 <artifactId>swagger</artifactId>
                 <version>${csp.swagger.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.csp.github.base</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${csp.fastjson.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.csp.github.base</groupId>
+                <artifactId>redis-starter</artifactId>
+                <version>${csp.redis.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.csp.github</groupId>
-                <artifactId>rabc</artifactId>
-                <version>${csp.rabc.version}</version>
+                <artifactId>auth</artifactId>
+                <version>${csp.auth.version}</version>
             </dependency>
 
 
@@ -236,31 +243,29 @@
                 <version>${spring-boot-admin.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq-spring-boot-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt-version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>maven-public</id>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://39.108.252.77:10001/nexus/repository/maven-public/</url>
-        </repository>
-    </repositories>
-
     <distributionManagement>
         <repository>
-            <id>myself</id>
-            <url>http://39.108.252.77:10001/nexus/repository/maven-releases/</url>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/116878-release-RJeAi8/</url>
         </repository>
         <snapshotRepository>
-            <id>myself</id>
-            <url>http://39.108.252.77:10001/nexus/repository/maven-snapshots/</url>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/116878-snapshot-uQ2lhH/</url>
         </snapshotRepository>
     </distributionManagement>
 

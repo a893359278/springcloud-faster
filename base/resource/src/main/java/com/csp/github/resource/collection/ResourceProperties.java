@@ -1,5 +1,7 @@
 package com.csp.github.resource.collection;
 
+import com.csp.github.resource.send.SendEnum;
+import com.csp.github.resource.send.Sender;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -25,7 +27,7 @@ import org.springframework.util.CollectionUtils;
 public class ResourceProperties implements InitializingBean {
 
 
-    public static final String DEFAULT_CHANNEL = "collection:resources";
+    public static final String DEFAULT_CHANNEL = "collectionResources";
 
     // 是否启用过滤器
     @Getter
@@ -40,6 +42,15 @@ public class ResourceProperties implements InitializingBean {
     @Getter
     @Setter
     private boolean enableCollectionDefault = true;
+
+    @Getter
+    @Setter
+    private SendEnum send;
+
+    @Getter
+    @Setter
+    private Sender sender;
+
     // 允许自定义过滤策略
     @Getter
     @Setter
@@ -106,4 +117,5 @@ public class ResourceProperties implements InitializingBean {
         initFilterStrategy();
         initCollectionStrategy();
     }
+
 }

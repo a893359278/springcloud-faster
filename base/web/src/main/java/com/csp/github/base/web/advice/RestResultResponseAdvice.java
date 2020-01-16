@@ -1,6 +1,5 @@
 package com.csp.github.base.web.advice;
 
-import com.alibaba.fastjson.JSONObject;
 import com.csp.github.base.common.entity.Result;
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
@@ -34,7 +35,8 @@ public class RestResultResponseAdvice implements ResponseBodyAdvice<Object> {
             return method.isAnnotationPresent(GetMapping.class)
                     || method.isAnnotationPresent(PostMapping.class)
                     || method.isAnnotationPresent(PutMapping.class)
-                    || method.isAnnotationPresent(DeleteMapping.class);
+                    || method.isAnnotationPresent(DeleteMapping.class)
+                    || (method.isAnnotationPresent(RequestMapping.class) && method.isAnnotationPresent(ResponseBody.class));
         }
         return false;
     }
@@ -48,7 +50,6 @@ public class RestResultResponseAdvice implements ResponseBodyAdvice<Object> {
             return Result.ok();
         } else {
             Result ok = Result.ok(body);
-            System.out.println(JSONObject.toJSONString(ok));
             return ok;
         }
 

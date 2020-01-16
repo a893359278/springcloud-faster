@@ -23,7 +23,21 @@ public enum DefaultResultType implements ResultType{
     SERVICE_EXCEPTION("20000", "业务异常"),
 
 
-    FORMAT_EXCEPTION("30000","参数格式化异常");
+    FORMAT_EXCEPTION("30000","参数格式化异常"),
+
+
+    ACCESS_DENIED("40001", "访问拒绝，没有权限"),
+    AUTHENTICATION_FAIL("40002", "认证失败"),
+    NEED_LOGIN("40003", "请登录"),
+    USERNAME_PASSWORD_INCORRECT("40004", "账号或密码不正确"),
+
+    TOKEN_NULL("50001", "token 不存在"),
+    TOKEN_ILLEGAL("50002", "token 解析失败"),
+    TOKEN_EXPIRATION("50003", "token 已过期"),
+    TOKEN_FRESH("50004", "token 需要刷新"),
+
+    EXIST("60001", "记录已存在"),
+    NOT_EXIST("60002", "记录不存在");
 
     DefaultResultType(String code, String msg) {
         this.code = code;

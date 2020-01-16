@@ -91,7 +91,7 @@ public class SwaggerAutoConfiguration implements EnvironmentAware {
     }
 
     private SecurityContext securityContext() {
-        return SecurityContext.builder().securityReferences(this.defaultAuth()).forPaths(PathSelectors.regex("^.*login.*$")).build();
+        return SecurityContext.builder().securityReferences(this.defaultAuth()).forPaths(PathSelectors.regex(".*")).build();
     }
 
     private List<SecurityReference> defaultAuth() {

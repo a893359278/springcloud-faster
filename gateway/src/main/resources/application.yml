@@ -1,0 +1,43 @@
+server:
+  port: 11110
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+zuul:
+  routes:
+    tenant-service: /tenant/**
+    ce-service: /ce/**
+  ignored-services: '*'
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+spring:
+  application:
+    name: getway
+  redis:
+    host: localhost
+    port: 6379
+
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+      circuitBreaker:
+        enabled: true
+        requestVolumeThreshold: 3

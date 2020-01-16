@@ -21,5 +21,6 @@
         <module>web</module>
         <module>swagger</module>
         <module>fastjson</module>
+        <module>redis-starter</module>
     </modules>
 </project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csp.github.tenant.mapper.TenantMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.csp.github.tenant.entity.Tenant">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="nick_name" property="nickName" />
+        <result column="avatar" property="avatar" />
+        <result column="kf_weixin" property="kfWeixin" />
+        <result column="kf_weixin_qr" property="kfWeixinQr" />
+        <result column="kf_phone" property="kfPhone" />
+        <result column="credit" property="credit" />
+        <result column="charge" property="charge" />
+        <result column="is_auto_transfer" property="isAutoTransfer" />
+        <result column="open_wxpay" property="openWxpay" />
+        <result column="open_alipay" property="openAlipay" />
+        <result column="open_sms" property="openSms" />
+        <result column="sms_per" property="smsPer" />
+        <result column="sms_count" property="smsCount" />
+        <result column="storage_space_per" property="storageSpacePer" />
+        <result column="storage_space_count" property="storageSpaceCount" />
+        <result column="enable" property="enable" />
+        <result column="expiration_time" property="expirationTime" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>

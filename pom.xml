@@ -11,8 +11,8 @@
 
     <modules>
         <module>auth</module>
-        <module>rabc</module>
-        <module>zuul</module>
+        <module>tenant</module>
+        <module>gateway</module>
         <module>eureka-server</module>
         <module>base</module>
         <module>boot-admin-server</module>

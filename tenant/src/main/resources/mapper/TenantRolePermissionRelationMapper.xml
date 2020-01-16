@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csp.github.tenant.mapper.TenantRolePermissionRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.csp.github.tenant.entity.TenantRolePermissionRelation">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="permission_id" property="permissionId" />
+    </resultMap>
+
+    <!--批量新增回写主键支持-->
+    <insert id="insertList">
+        INSERT INTO ums_role_permission_relation (role_id, permission_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.roleId,jdbcType=BIGINT},
+            #{item.permissionId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <select id="getPermissionList" resultMap="com.csp.github.tenant.mapper.TenantPermissionMapper.BaseResultMap">
+        SELECT
+            p.*
+        FROM
+            ums_role_permission_relation r
+            LEFT JOIN ums_permission p ON r.permission_id = p.id
+        WHERE
+            r.role_id = #{roleId};
+    </select>
+
+</mapper>

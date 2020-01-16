@@ -2,7 +2,8 @@ package com.csp.github.resource.collection;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.resource.annotation.ResourceEntity;
-import com.csp.github.resource.protobuf.ProtobufRedisTemplate;
+import com.csp.github.resource.send.RocketMqSender;
+import com.csp.github.resource.send.Sender;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * 收集器
@@ -60,17 +60,20 @@ public class Collectors implements BeanPostProcessor, ApplicationContextAware, C
 
     @Override
     public void run(String... args) throws Exception {
+
         Thread thread = new Thread(() -> {
 
             log.info("资源收集线程：{}, 开启", threadName);
 
             Set<ResourceEntity> array = new HashSet<>();
-            StringRedisTemplate redisTemplate = ac.getBean(StringRedisTemplate.class);
-            ProtobufRedisTemplate bean = ac.getBean(ProtobufRedisTemplate.class);
+            Sender sender = getPermissionSender();
+
             try {
                 resourceProperties.getCollectionList()
                         .forEach(strategy -> array.addAll(strategy.collectionStrategy(this.list, contextPath)));
-                redisTemplate.convertAndSend(resourceProperties.getSendChannel(), JSONObject.toJSONString(array));
+
+                sender.sendPermissions(JSONObject.toJSONString(array));
+
                 log.info("收集到的资源：{}", JSONObject.toJSONString(array));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -81,12 +84,26 @@ public class Collectors implements BeanPostProcessor, ApplicationContextAware, C
             }
 
         }, threadName);
+
         thread.start();
+    }
+
+    private Sender getPermissionSender() {
+        Sender sender = null;
+        switch (resourceProperties.getSend()) {
+            case rocketMQ:
+                sender = ac.getBean(RocketMqSender.class);
+                break;
+            default:
+                sender = ac.getBean(RocketMqSender.class);
+        }
+        resourceProperties.setSender(sender);
+        return sender;
     }
 
     @Override
     public void setEnvironment(Environment environment) {
-        this.threadName = environment.getProperty("spring.application.name", "collector-thread");
+        this.threadName = environment.getProperty("spring.application.name", "collector-permission-thread");
         this.contextPath = environment.getProperty("server.servlet.contextPath", "/");
     }
 }
