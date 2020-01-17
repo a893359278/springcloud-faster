@@ -1,8 +1,10 @@
 ## 为什么会有这个项目
 
++ 提供多租户的 springcloud 开发系统，目前开源的多租户 springcloud 较少
 + 见过很多的 springcloud 的项目，通用的配置类，从这个项目复制到另外一个项目
 + 更加快速开发 springcloud。不需要添加太多的依赖，简称再封装。
 + 打算做成一个项目的基础框架。开发过程中，只需做好业务开发即可。不需要做其他额外的配置。
+
 
 ## 有什么功能
 ### 已完成
@@ -104,99 +106,4 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 
 ### parent 模块
 
-统一 nexus 的地址
-
-### starter 模块
-
-依赖各个模块，内置各个环境的打包方式。只需继承 starter 即可快速开发业务，无需过多关系配置上的事情。
-
-###  common 模块
-
-统一项目的工具类
-
-### fastjson 模块
-
-统一配置 fastJson，比如 Long 精度丢失问题
-
-### log 模块
-
-全局配置日志
-
-### swagger 模块
-
-只需使用 @EnableSwagger 注解，即可拥有 swagger 能力（模块中没有依赖 ui 。需要自己添加）
-
-### auth 模块
-
-提供 oauth2.0，统一鉴权，开始集成近网关。开发进度有80%。只剩下 zuul 转发到对应的服务，由对应的服务完成权限校验
-
-### web 模块
-
-+ 为了在 swagger 上面能够显示对应实体的信息，接口直接返回的是数据对象，而没有做返回值的统一封装，而是通过 ResponseBodyAdvice 接口，统一封装返回的对象。
-+ 为了 openFeign 调用的时候，也能得到数据对象，而不是封装的返回对象。编写了 feign 的解码器，将上游封装过的返回对象解码为我们需要的数据对象。
-
-#### 编码风格大概如下：
-
-服务A：直接返回数据对象
-
-```java
-@ApiOperation(value = "获取用户信息，包括权限，角色")
-@GetMapping("/{id}")
-public AdminUser userFullInfo(@PathVariable Long id) {
-  AdminUser info = userService.getUserInfoWithRolesAndPermissions(id);
-  return info;
-}
-```
-
-
-
-调用服务 A 的服务 B：
-
-Feign
-
-```java
-@FeignClient(value = "rabc-service", path = "/adminUser", fallbackFactory = DefaultHystrixFallbackFactory.class)
-public interface RabcFeign {
-    @GetMapping("/{id}")
-    AdminUser userFullInfo(@PathVariable Long id);
-}
-```
-
-Controller：直接接收数据对象
-
-```java
-@ApiOperation(value = "测试")
-@GetMapping("/test")
-public AdminUser tt() {
-  return rabcFeign.userFullInfo(1193445540674965506L);
-}
-```
-
-#### swagger 上面长这样
-
-可以直接查看到返回的数据对象的数据格式。
-
-![image-20191210000616099](https://github.com/a893359278/springcloud-faster/blob/master/images/image-20191210000616099.png)
-
-
-
-### tenant 多租户 模块
-
-tenant 模块 基于 Mybatits-plus 开发，做到多租户代码无感知。具备基本的权限管理接口
-
-### 权限自动收集  base.resource
-resource 目前具备自动收集项目中定义的权限注解。@ResourceCollection， 还支持 Swagger 权限的收集
-
-resource 工作流程：
-+ 过滤
-
-目前过滤把有 Controller, RestController 注解的类过滤出来，支持自定义
-+ 收集
-
-收集默认是收集带有 @ApiOperation 注解的。收集到的权限会被封装为 ResourceEntity 实体。 支持自定义
-+ 处理收集到的资源（需要自己处理）
-
-已改用 rocketMQ 收集资源
-
-
-
+统一 nexus 的
