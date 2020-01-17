@@ -1,24 +1,17 @@
 package com.csp.github.auth.config;
 
-import com.csp.github.auth.filter.JwtTokenFilter;
 import com.csp.github.auth.hanlder.AccessDeniedJsonHandler;
 import com.csp.github.auth.hanlder.AuthenticationJsonEntryPoint;
-import com.csp.github.auth.provider.TenantDaoAuthenticationProvider;
-import com.csp.github.auth.utils.JwtUtils;
-import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -27,7 +20,6 @@ import org.springframework.web.filter.CorsFilter;
  * @author 陈少平
  * @date 2019-11-20 23:37
  */
-@Import(JwtUtils.class)
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -78,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js",
+                        "/**/*.ico",
                         "/webSocket/**"
                 ).permitAll()
                 // swagger 文档
@@ -92,17 +85,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/druid/**").permitAll()
                 // 放行OPTIONS请求
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/tenant/login").permitAll()
                 // 所有请求都需要认证
-                .anyRequest().authenticated()
-                .and().addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated();
+//                .and()
+//                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
     }
 
-    @Resource
-    JwtUtils jwtUtils;
-    @Bean
-    public JwtTokenFilter jwtTokenFilter() {
-        return new JwtTokenFilter(jwtUtils);
-    }
+//    @Resource
+//    JwtUtils jwtUtils;
+//    @Bean
+//    public JwtTokenFilter jwtTokenFilter() {
+//        return new JwtTokenFilter(jwtUtils);
+//    }
 
     @Bean
     GrantedAuthorityDefaults grantedAuthorityDefaults() {
@@ -126,12 +122,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 5、配置 认证提供者。使用的是 适配者设计模式。
     // 因为配置了 AuthenticationManagerBuilder。因此，不会添加 DaoAuthenticationProvider。这里手动添加
     // 如果有自定义的 认证提供者，应该是往这里面添加
-    @Override
-    public void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.authenticationProvider(tenantDaoAuthenticationProvider());
+//    @Override
+//    public void configure(AuthenticationManagerBuilder auth)
+//            throws Exception {
+//        auth.authenticationProvider(tenantDaoAuthenticationProvider());
 //                .authenticationProvider(memberDaoSmsAuthenticationProvider());
-    }
+//    }
 
     // 配置 spring security 提供的默认 DaoAuthenticationProvider。
     // DaoAuthenticationProvider 默认使用的 DelegatingPasswordEncoder 加密策略 有点恶心。。。
@@ -143,10 +139,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new MemberDaoSmsAuthenticationProvider();
 //    }
 
-    @Bean
-    public TenantDaoAuthenticationProvider tenantDaoAuthenticationProvider() {
-        return new TenantDaoAuthenticationProvider();
-    }
+//    @Bean
+//    public TenantDaoAuthenticationProvider tenantDaoAuthenticationProvider() {
+//        return new TenantDaoAuthenticationProvider();
+//    }
 
 
     /**

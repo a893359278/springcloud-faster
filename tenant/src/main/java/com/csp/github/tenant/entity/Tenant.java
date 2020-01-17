@@ -111,6 +111,11 @@ public class Tenant extends BaseEntity implements Serializable {
      */
     private LocalDateTime expirationTime;
 
+    /**
+     * 是否开启只有1个账号登录
+     */
+    private Boolean enableOneAccount;
+
     @TableField(exist = false)
     private List<String> permission;
 }

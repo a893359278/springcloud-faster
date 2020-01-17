@@ -22,14 +22,14 @@ public class TenantServiceCommon {
     TenantAdminRoleRelationMapper adminRoleRelationMapper;
 
 
-    public Tenant getAdminByUsername(String username) {
+    public Tenant getTenantByUsername(String username) {
         QueryWrapper<Tenant> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(Tenant::getUsername, username);
         return tenantMapper.selectOne(wrapper);
     }
 
-    public List<TenantPermission> getPermissionList(Long unitId) {
-        return adminRoleRelationMapper.getPermissionList(unitId);
+    public List<TenantPermission> getPermissionList(Long tenantId) {
+        return adminRoleRelationMapper.getPermissionList(tenantId);
     }
 
 }

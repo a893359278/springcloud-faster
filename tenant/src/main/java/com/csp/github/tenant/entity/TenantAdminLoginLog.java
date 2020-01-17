@@ -38,5 +38,4 @@ public class TenantAdminLoginLog implements Serializable {
      */
     private String userAgent;
 
-
 }

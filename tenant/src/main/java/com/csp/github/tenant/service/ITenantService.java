@@ -35,9 +35,8 @@ public interface ITenantService extends IService<Tenant> {
      * 登录功能
      * @param username 用户名
      * @param password 密码
-     * @return 生成的JWT的token
      */
-//    String login(String username, String password);
+    Tenant login(String username, String password);
 
     /**
      * 刷新token的功能

@@ -3,8 +3,10 @@ package com.csp.github.auth.hanlder;
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.base.common.entity.DefaultResultType;
 import com.csp.github.base.common.entity.Result;
+import com.csp.github.base.common.exception.BaseException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,8 +25,14 @@ public class AuthenticationJsonEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
-        log.info("用户还未登录, 入参：{}", JSONObject.toJSONString(request.getParameterMap()));
+        response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
-        writer.write(JSONObject.toJSONString(Result.fail(DefaultResultType.NEED_LOGIN)));
+        Throwable ex = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        if (ex instanceof BaseException) {
+            BaseException exception = (BaseException) ex;
+            writer.write(JSONObject.toJSONString(Result.fail(exception)));
+        } else {
+            writer.write(JSONObject.toJSONString(Result.fail(DefaultResultType.NEED_LOGIN)));
+        }
     }
 }

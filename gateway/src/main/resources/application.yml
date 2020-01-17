@@ -12,7 +12,6 @@ management:
 zuul:
   routes:
     tenant-service: /tenant/**
-    ce-service: /ce/**
   ignored-services: '*'
   host:
     socket-timeout-millis: 60000

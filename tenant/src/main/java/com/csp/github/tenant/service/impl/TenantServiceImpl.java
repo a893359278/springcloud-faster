@@ -1,11 +1,15 @@
 package com.csp.github.tenant.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.csp.github.base.common.constants.Constants;
 import com.csp.github.base.common.entity.DefaultResultType;
 import com.csp.github.base.common.exception.ServiceException;
 import com.csp.github.base.common.utils.BCryptUtils;
@@ -27,11 +31,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -50,20 +57,31 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Service
 public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> implements ITenantService {
 
+    private static final String TENANT_TOKEN_refresh_STORE_PRE = "tenant:token:refresh";
+    private static final String TENANT_TOKEN_expire_STORE_PRE = "tenant:token:expire";
+    private static final String TENANT_CURRENT_ACCOUNT_STORE_PRE = "tenant:current:token";
+    private static final String TENANT_STORE_PRE = "tenant:info";
+    private static final String TENANT_PERMISSION_STORE_PRE = "tenant:permissions";
+
+    public static final int refreshMinutes = 120;
+    public static final int expireMinutes = 10080;
+
     @Resource
-    TenantServiceCommon unitServiceCommon;
+    TenantServiceCommon tenantServiceCommon;
     @Resource
-    TenantMapper unitMapper;
+    TenantMapper tenantMapper;
     @Resource
     TenantAdminRoleRelationMapper adminRoleRelationMapper;
     @Resource
     TenantAdminPermissionRelationMapper adminPermissionRelationMapper;
     @Resource
     TenantAdminLoginLogMapper loginLogMapper;
+    @Resource
+    StringRedisTemplate redisTemplate;
 
     @Override
     public Tenant getAdminByUsername(String username) {
-        return unitServiceCommon.getAdminByUsername(username);
+        return tenantServiceCommon.getTenantByUsername(username);
     }
 
     @Override
@@ -82,19 +100,53 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
         //将密码进行加密操作
         String encodePassword = BCryptUtils.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(encodePassword);
-        unitMapper.insert(umsAdmin);
+        tenantMapper.insert(umsAdmin);
         return umsAdmin;
     }
 
-//    @Override
-//    public String login(String username, String password) {
-//
-//        TenantAuthenticationToken token = new TenantAuthenticationToken(username, password);
-//        token = (TenantAuthenticationToken) authenticationManager.authenticate(token);
-//        SecurityContextHolder.getContext().setAuthentication(token);
-//        // 生成 token
-//        return jwtUtils.getJwtProperties().getTokenPrefix() + jwtUtils.createTenantToken(token.getPrincipal(), token.getTenantId(), token.getAuthorities());
-//    }
+    @Override
+    public Tenant login(String username, String password) {
+        Tenant tenant = tenantServiceCommon.getTenantByUsername(username);
+        if (Objects.nonNull(tenant)) {
+            if (BCryptUtils.matches(password, tenant.getPassword())) {
+                checkTenantStatus(tenant);
+                List<TenantPermission> permissionList = tenantServiceCommon.getPermissionList(tenant.getId());
+                String token = createToken();
+                saveUserInfo(tenant.getId(), token, permissionList, tenant);
+                return tenant;
+            } else {
+                throw new ServiceException(DefaultResultType.USERNAME_PASSWORD_INCORRECT);
+            }
+        } else {
+            throw new ServiceException("账号不存在");
+        }
+    }
+
+    private void checkTenantStatus(Tenant tenant) {
+        if (tenant.getEnable() == Constants.NO) {
+            throw new ServiceException("账号异常！");
+        }
+    }
+
+    private void saveUserInfo(Long id, String token, List<TenantPermission> permissionList, Tenant tenant) {
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        // token 刷新
+        ops.set(TENANT_TOKEN_refresh_STORE_PRE + ":" + token, id.toString(), refreshMinutes, TimeUnit.MINUTES);
+        // token 过期
+        ops.set(TENANT_TOKEN_expire_STORE_PRE + ":" + token, id.toString(), expireMinutes, TimeUnit.MINUTES);
+        // 当前登录的账号 token
+        ops.set(TENANT_CURRENT_ACCOUNT_STORE_PRE + ":" + id, token);
+        // 当前账号信息
+        ops.set(TENANT_STORE_PRE + ":" + id, JSON.toJSONString(tenant));
+        if (CollectionUtil.isNotEmpty(permissionList)) {
+            // 权限
+            ops.set(TENANT_PERMISSION_STORE_PRE + ":" + id, JSON.toJSONString(permissionList));
+        }
+    }
+
+    private String createToken() {
+        return IdUtil.fastSimpleUUID();
+    }
 
     /**
      * 添加登录记录
@@ -124,7 +176,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
 
     @Override
     public Tenant getItem(Long id) {
-        return unitMapper.selectById(id);
+        return tenantMapper.selectById(id);
     }
 
     @Override
@@ -135,7 +187,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
             wrapper.like(Tenant::getUsername, "%" + name + "%");
             wrapper.or(true).like(Tenant::getNickName, "%" + name + "%");
         }
-        return unitMapper.selectPage(page, wrapper);
+        return tenantMapper.selectPage(page, wrapper);
     }
 
     @Override
@@ -143,12 +195,12 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
         admin.setId(id);
         //密码已经加密处理，需要单独修改
         admin.setPassword(null);
-        return unitMapper.updateById(admin);
+        return tenantMapper.updateById(admin);
     }
 
     @Override
     public int delete(Long id) {
-        return unitMapper.deleteById(id);
+        return tenantMapper.deleteById(id);
     }
 
     @Override
@@ -229,19 +281,19 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
         }
         QueryWrapper<Tenant> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(Tenant::getUsername, param.getUsername());
-        Tenant umsAdmin = unitMapper.selectOne(wrapper);
+        Tenant umsAdmin = tenantMapper.selectOne(wrapper);
         if(!BCryptUtils.matches(param.getOldPassword(),umsAdmin.getPassword())){
             throw new ServiceException(DefaultResultType.USERNAME_PASSWORD_INCORRECT);
         }
         umsAdmin.setPassword(BCryptUtils.encode(param.getNewPassword()));
-        return unitMapper.updateById(umsAdmin);
+        return tenantMapper.updateById(umsAdmin);
     }
 
 //    @Override
 //    public Tenant getAdminInfo() {
 //        TenantAuthenticationToken token = (TenantAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 //        Long id = token.getTenantId();
-//        Tenant unit = getById(id);
+//        Tenant tenant = getById(id);
 //        Collection<GrantedAuthority> authorities = token.getAuthorities();
 //        List<String> permission = new LinkedList<>();
 //        if (CollectionUtil.isNotEmpty(authorities)) {
@@ -249,9 +301,9 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
 //                permission.add(authority.getAuthority());
 //            }
 //        }
-//        unit.setId(null).setPassword("");
-//        unit.setPermission(permission);
-//        return unit;
+//        tenant.setId(null).setPassword("");
+//        tenant.setPermission(permission);
+//        return tenant;
 //    }
 //
 //    @Override

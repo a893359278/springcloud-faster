@@ -14,13 +14,13 @@ public class TenantAuthenticationToken extends AbstractAuthenticationToken {
     private String username;
     private String password;
     @Getter
-    private Long unitId;
+    private Long tenantId;
 
-    public TenantAuthenticationToken(Collection<? extends GrantedAuthority> authorities, String username, String password, Long unitId) {
+    public TenantAuthenticationToken(Collection<? extends GrantedAuthority> authorities, String username, String password, Long tenantId) {
         super(authorities);
         this.username = username;
         this.password = password;
-        this.unitId = unitId;
+        this.tenantId = tenantId;
         super.setAuthenticated(true);
     }
 
