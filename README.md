@@ -8,7 +8,7 @@
 ### 已完成
 + 权限的自动收集
 + spring-security 整合，多登陆方式。
-+ 基于 rabc 的权限模块
++ 多租户模块 tenant
 + swagger starter
 + fastjson starter
 + openfeign hystrix 统一全局处理
@@ -180,9 +180,9 @@ public AdminUser tt() {
 
 
 
-### rabc 模块
+### tenant 多租户 模块
 
-目前的 rabc 模块比较简单，功能还没加，但是主要的框架已经搭起来。大概的展示了如何快速的利用项目中的 starter 进一步简化开发，更加的专注业务开发。
+tenant 模块 基于 Mybatits-plus 开发，做到多租户代码无感知。具备基本的权限管理接口
 
 ### 权限自动收集  base.resource
 resource 目前具备自动收集项目中定义的权限注解。@ResourceCollection， 还支持 Swagger 权限的收集
@@ -196,7 +196,7 @@ resource 工作流程：
 收集默认是收集带有 @ApiOperation 注解的。收集到的权限会被封装为 ResourceEntity 实体。 支持自定义
 + 处理收集到的资源（需要自己处理）
 
-这部分需要自己处理，目前使用的是 redis 的发布订阅，比较简单（缺陷当然有很多，先快速实现功能）
+已改用 rocketMQ 收集资源
 
 
 
