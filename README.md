@@ -128,7 +128,7 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 
 ### auth 模块
 
-提供 oauth2.0，统一鉴权，准备集成到网关。
+提供 oauth2.0，统一鉴权，开始集成近网关。开发进度有80%。只剩下 zuul 转发到对应的服务，由对应的服务完成权限校验
 
 ### web 模块
 
