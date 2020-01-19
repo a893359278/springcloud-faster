@@ -9,16 +9,15 @@
 ## 有什么功能
 ### 已完成
 + 权限的自动收集
-+ spring-security 整合，多登陆方式。
 + 多租户模块 tenant
 + swagger starter
 + fastjson starter
 + openfeign hystrix 统一全局处理
++ 分布式权限认证
 ### 待开发
 + 日志配置统一配置
 + redis 扩展，分布式锁
 + docker 容器化部署
-+ spring security 集成到 网关（目前只是简单整合 spring security ）
 
 ## 快速开发Demo
 
