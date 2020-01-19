@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.LongValue;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -59,7 +60,7 @@ public class MybatisPlusConfig {
 //                    UnitAuthenticationToken token = (UnitAuthenticationToken) authentication;
 //                    return new LongValue(token.getUnitId());
 //                }
-                return null;
+                return new LongValue(1);
             }
 
             @Override
@@ -84,7 +85,7 @@ public class MybatisPlusConfig {
             @Override
             public boolean doFilter(MetaObject metaObject) {
                 MappedStatement ms = SqlParserHelper.getMappedStatement(metaObject);
-                if ("com.asita.mall.ums.mapper.UmsMemberMapper.insert".equals(ms.getId())) {
+                if ("com.csp.github.tenant.mapper.TenantMapper.insert".equals(ms.getId())) {
                     return true;
                 }
                 return false;

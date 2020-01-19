@@ -78,9 +78,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webSocket/**"
                 ).permitAll()
                 // swagger 文档
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/**/swagger-ui.html").permitAll()
+                .antMatchers("/**/swagger-resources/**").permitAll()
+                .antMatchers("/**/webjars/**").permitAll()
                 .antMatchers("/*/api-docs").permitAll()
                 // 文件
                 .antMatchers("/avatar/**").permitAll()

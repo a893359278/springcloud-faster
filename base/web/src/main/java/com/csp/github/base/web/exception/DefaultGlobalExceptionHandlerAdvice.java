@@ -55,6 +55,9 @@ public class DefaultGlobalExceptionHandlerAdvice {
      */
     @ExceptionHandler(NumberFormatException.class)
     public Object numberFormatException(NumberFormatException ex) {
+        String localizedMessage = ex.getLocalizedMessage();
+        StackTraceElement[] stackTrace = ex.getStackTrace();
+        ex.printStackTrace();
         log.error("参数格式化异常:{}", ex.getMessage());
         return Result.fail(DefaultResultType.FORMAT_EXCEPTION.getCode(), DefaultResultType.FORMAT_EXCEPTION.getMsg());
     }

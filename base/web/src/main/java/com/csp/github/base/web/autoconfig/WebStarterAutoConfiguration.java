@@ -23,13 +23,13 @@ import org.springframework.context.annotation.Import;
 @Configuration
 public class WebStarterAutoConfiguration {
 
-    @Bean
-    public Validator validator(){
-        ValidatorFactory validatorFactory = Validation.byProvider( HibernateValidator.class )
-                .configure()
-                .addProperty( "hibernate.validator.fail_fast", "true" )
-                .buildValidatorFactory();
-        return validatorFactory.getValidator();
-    }
+//    @Bean
+//    public Validator validator(){
+//        ValidatorFactory validatorFactory = Validation.byProvider( HibernateValidator.class )
+//                .configure()
+//                .addProperty( "hibernate.validator.fail_fast", "true" )
+//                .buildValidatorFactory();
+//        return validatorFactory.getValidator();
+//    }
 
 }

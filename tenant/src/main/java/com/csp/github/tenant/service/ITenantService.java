@@ -36,7 +36,7 @@ public interface ITenantService extends IService<Tenant> {
      * @param username 用户名
      * @param password 密码
      */
-    Tenant login(String username, String password);
+    String login(String username, String password);
 
     /**
      * 刷新token的功能

@@ -66,7 +66,7 @@ public class SwaggerAutoConfiguration implements EnvironmentAware {
                 .alternateTypeRules((AlternateTypeRule[]) this.alternateTypeRules.toArray(new AlternateTypeRule[0]))
                 .securityContexts(Collections.singletonList(this.securityContext()))
                 .securitySchemes(Collections.singletonList(this.apiKey()))
-                .host(StringUtils.isEmpty(this.swaggerProperties.getHost()) ? null : this.swaggerProperties.getHost())
+//                .host(StringUtils.isEmpty(this.swaggerProperties.getHost()) ? null : this.swaggerProperties.getHost())
                 .forCodeGeneration(true)
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))

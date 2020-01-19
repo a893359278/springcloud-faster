@@ -33,14 +33,10 @@ public class FastJsonAutoconfig {
         serializeConfig.put(Long.class, ToStringSerializer.instance);
         serializeConfig.put(Long.TYPE, ToStringSerializer.instance);
         fastJsonConfig.setSerializeConfig(serializeConfig);
-        fastJsonConfig.setSerializerFeatures(
-                SerializerFeature.PrettyFormat);
         // 配置 序列化 特征
         fastJsonConfig.setSerializerFeatures(
-                SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNullStringAsEmpty,
-                SerializerFeature.WriteNullListAsEmpty,
-                SerializerFeature.DisableCircularReferenceDetect
+                SerializerFeature.PrettyFormat
         );
 
         //3处理中文乱码问题

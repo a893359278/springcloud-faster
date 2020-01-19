@@ -25,14 +25,14 @@
         from tenant_admin_role_relation ar left join tenant_role r on ar.role_id = r.id
         where ar.tenant_id = #{adminId}
     </select>
-    <select id="getRolePermissionList" resultMap="com.asita.mall.tenant.mapper.UnitPermissionMapper.BaseResultMap">
+    <select id="getRolePermissionList" resultMap="com.csp.github.tenant.mapper.TenantPermissionMapper.BaseResultMap">
         select p.*
         from tenant_admin_role_relation ar left join tenant_role r on ar.role_id = r.id
             left join tenant_role_permission_relation rp on r.id = rp.role_id
             left join tenant_permission p on rp.permission_id=p.id
             where ar.tenant_id = #{adminId} and p.id is not null
     </select>
-    <select id="getPermissionList" resultMap="com.asita.mall.tenant.mapper.UnitPermissionMapper.BaseResultMap">
+    <select id="getPermissionList" resultMap="com.csp.github.tenant.mapper.TenantPermissionMapper.BaseResultMap">
         SELECT
             p.*
         FROM

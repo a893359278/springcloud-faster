@@ -10,6 +10,9 @@ management:
     health:
       show-details: ALWAYS
 zuul:
+  SendErrorFilter:
+    error:
+      disable: true
   routes:
     tenant-service: /tenant/**
   ignored-services: '*'

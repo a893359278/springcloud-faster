@@ -91,7 +91,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
     }
 
     @Override
-    public Tenant login(String username, String password) {
+    public String login(String username, String password) {
         Tenant tenant = tenantServiceCommon.getTenantByUsername(username);
         if (Objects.nonNull(tenant)) {
             if (BCryptUtils.matches(password, tenant.getPassword())) {
@@ -100,7 +100,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
 
                 String token = tokenStore.generatorUUIDToken();
                 tokenStore.saveTenantInfo(tenant.getId(), token, permissionList, tenant);
-                return tenant;
+                return token;
             } else {
                 throw new ServiceException(DefaultResultType.USERNAME_PASSWORD_INCORRECT);
             }

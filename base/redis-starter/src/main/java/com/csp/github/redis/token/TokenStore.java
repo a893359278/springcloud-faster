@@ -21,8 +21,8 @@ public class TokenStore {
     public static final String TENANT_STORE_PRE = "tenant:info:";
     public static final String TENANT_PERMISSION_STORE_PRE = "tenant:permissions:";
 
-    public static final int refreshMinutes = 120;
-    public static final int expireMinutes = 10080;
+    public static final long refreshMinutes = 120L;
+    public static final long expireMinutes = 10080L;
 
     private StringRedisTemplate redisTemplate;
 
@@ -71,12 +71,16 @@ public class TokenStore {
         return IdUtil.fastSimpleUUID();
     }
 
-    public void refreshTenantToken(String token, Long tenantId) {
+    public void refreshTenantToken(String oldToken, String newToken, Long tenantId) {
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
         // token 刷新
-        ops.set(TENANT_TOKEN_REFRESH_STORE_PRE + token, tenantId.toString(), refreshMinutes, TimeUnit.MINUTES);
-        // token 过期
-        ops.set(TENANT_TOKEN_EXPIRE_STORE_PRE + token, tenantId.toString(), expireMinutes, TimeUnit.MINUTES);
+        ops.set(TENANT_TOKEN_REFRESH_STORE_PRE + newToken, tenantId.toString(), refreshMinutes, TimeUnit.MINUTES);
+        // 删除旧 token
+        redisTemplate.delete(TENANT_TOKEN_EXPIRE_STORE_PRE + oldToken);
+        // 设置新 token
+        ops.set(TENANT_TOKEN_EXPIRE_STORE_PRE + newToken, tenantId.toString(), expireMinutes, TimeUnit.MINUTES);
+        // 设置当前用户
+        ops.set(TENANT_CURRENT_ACCOUNT_STORE_PRE + tenantId , newToken);
     }
 
 }

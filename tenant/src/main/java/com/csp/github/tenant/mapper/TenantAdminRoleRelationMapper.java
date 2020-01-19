@@ -37,6 +37,6 @@ public interface TenantAdminRoleRelationMapper extends BaseMapper<TenantAdminRol
      * 获取用户所有权限(包括+-权限)
      */
     @SqlParser(filter = true)
-    List<TenantPermission> getPermissionList(@Param("unitId") Long unitId);
+    List<TenantPermission> getPermissionList(@Param("tenantId") Long tenantId);
 
 }

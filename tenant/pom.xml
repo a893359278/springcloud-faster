@@ -16,16 +16,14 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>com.csp.github.base</groupId>
-            <artifactId>resource</artifactId>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.csp.github.base</groupId>-->
+<!--            <artifactId>resource</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -45,19 +43,21 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.csp.github.base</groupId>
             <artifactId>swagger</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.csp.github.base</groupId>
             <artifactId>redis-starter</artifactId>
-            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
     </dependencies>
 

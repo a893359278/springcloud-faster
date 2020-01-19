@@ -3,9 +3,7 @@ package com.csp.github.zuul;
 import com.csp.github.base.web.annotation.StarterApplication;
 import com.csp.github.swagger.autoconfig.EnableSwagger;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author 陈少平

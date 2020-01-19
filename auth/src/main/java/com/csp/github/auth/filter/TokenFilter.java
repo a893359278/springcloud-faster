@@ -41,7 +41,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 throw new ServiceException(DefaultResultType.TOKEN_ILLEGAL);
             }
             String token = tokens[1];
-            if (StrUtil.isBlank(token) || token.length() != 36) {
+            if (StrUtil.isBlank(token) || token.length() != 32) {
                 throw new ServiceException(DefaultResultType.TOKEN_ILLEGAL);
             }
             return token;

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,13 +46,13 @@ public class TenantController {
 
     @ApiOperation(value = "用户注册")
     @PostMapping(value = "/register")
-    public Tenant register(@RequestBody TenantParam umsAdminParam) {
+    public Tenant register(@RequestBody @Validated TenantParam umsAdminParam) {
         return tenantService.register(umsAdminParam);
     }
 
     @ApiOperation(value = "用户登录，返回token")
     @PostMapping(value = "/login")
-    public Tenant login(@RequestBody TenantLoginParam umsAdminLoginParam) {
+    public String login(@RequestBody @Validated TenantLoginParam umsAdminLoginParam) {
         return tenantService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
     }
 

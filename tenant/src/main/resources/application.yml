@@ -17,14 +17,14 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
 # fegin
 feign:
   hystrix:
-    enabled: true
+    enabled: false
 
 # mybatis-plus
 mybatis-plus:
+  typeEnumsPackage: com.csp.github.*.enums
   global-config:
     db-config:
       id-type: ID_WORKER
@@ -49,3 +49,11 @@ hystrix:
       circuitBreaker:
         enabled: true
         requestVolumeThreshold: 3
+tenant:
+  column: tenant_id
+  # 多租户过滤表
+  table-filters:
+    - tenant
+    - tenant_admin_permission_relation
+    - tenant_admin_role_relation
+    - tenant_role_permission_relation
