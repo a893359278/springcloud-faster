@@ -1,9 +1,6 @@
 package com.csp.github.tenant.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,6 +10,7 @@ import com.csp.github.base.common.constants.Constants;
 import com.csp.github.base.common.entity.DefaultResultType;
 import com.csp.github.base.common.exception.ServiceException;
 import com.csp.github.base.common.utils.BCryptUtils;
+import com.csp.github.redis.token.TokenStore;
 import com.csp.github.tenant.dto.TenantParam;
 import com.csp.github.tenant.dto.UpdateAdminPasswordParam;
 import com.csp.github.tenant.entity.Tenant;
@@ -31,14 +29,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -57,15 +52,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Service
 public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> implements ITenantService {
 
-    private static final String TENANT_TOKEN_refresh_STORE_PRE = "tenant:token:refresh";
-    private static final String TENANT_TOKEN_expire_STORE_PRE = "tenant:token:expire";
-    private static final String TENANT_CURRENT_ACCOUNT_STORE_PRE = "tenant:current:token";
-    private static final String TENANT_STORE_PRE = "tenant:info";
-    private static final String TENANT_PERMISSION_STORE_PRE = "tenant:permissions";
-
-    public static final int refreshMinutes = 120;
-    public static final int expireMinutes = 10080;
-
     @Resource
     TenantServiceCommon tenantServiceCommon;
     @Resource
@@ -77,7 +63,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
     @Resource
     TenantAdminLoginLogMapper loginLogMapper;
     @Resource
-    StringRedisTemplate redisTemplate;
+    TokenStore tokenStore;
 
     @Override
     public Tenant getAdminByUsername(String username) {
@@ -111,8 +97,9 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
             if (BCryptUtils.matches(password, tenant.getPassword())) {
                 checkTenantStatus(tenant);
                 List<TenantPermission> permissionList = tenantServiceCommon.getPermissionList(tenant.getId());
-                String token = createToken();
-                saveUserInfo(tenant.getId(), token, permissionList, tenant);
+
+                String token = tokenStore.generatorUUIDToken();
+                tokenStore.saveTenantInfo(tenant.getId(), token, permissionList, tenant);
                 return tenant;
             } else {
                 throw new ServiceException(DefaultResultType.USERNAME_PASSWORD_INCORRECT);
@@ -126,26 +113,6 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
         if (tenant.getEnable() == Constants.NO) {
             throw new ServiceException("账号异常！");
         }
-    }
-
-    private void saveUserInfo(Long id, String token, List<TenantPermission> permissionList, Tenant tenant) {
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        // token 刷新
-        ops.set(TENANT_TOKEN_refresh_STORE_PRE + ":" + token, id.toString(), refreshMinutes, TimeUnit.MINUTES);
-        // token 过期
-        ops.set(TENANT_TOKEN_expire_STORE_PRE + ":" + token, id.toString(), expireMinutes, TimeUnit.MINUTES);
-        // 当前登录的账号 token
-        ops.set(TENANT_CURRENT_ACCOUNT_STORE_PRE + ":" + id, token);
-        // 当前账号信息
-        ops.set(TENANT_STORE_PRE + ":" + id, JSON.toJSONString(tenant));
-        if (CollectionUtil.isNotEmpty(permissionList)) {
-            // 权限
-            ops.set(TENANT_PERMISSION_STORE_PRE + ":" + id, JSON.toJSONString(permissionList));
-        }
-    }
-
-    private String createToken() {
-        return IdUtil.fastSimpleUUID();
     }
 
     /**

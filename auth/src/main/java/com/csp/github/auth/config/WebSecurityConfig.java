@@ -1,7 +1,10 @@
 package com.csp.github.auth.config;
 
+import com.csp.github.auth.filter.TokenFilter;
 import com.csp.github.auth.hanlder.AccessDeniedJsonHandler;
 import com.csp.github.auth.hanlder.AuthenticationJsonEntryPoint;
+import com.csp.github.redis.token.TokenStore;
+import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,6 +15,7 @@ import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -87,10 +91,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/tenant/login").permitAll()
                 // 所有请求都需要认证
-                .anyRequest().authenticated();
-//                .and()
-//                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
+    }
+
+    @Resource
+    TokenStore tokenStore;
+    @Bean
+    public TokenFilter tokenFilter() {
+        TokenFilter filter = new TokenFilter();
+        filter.setTokenStore(tokenStore);
+        return filter;
     }
 
 //    @Resource

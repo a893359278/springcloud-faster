@@ -16,13 +16,6 @@
 
     <dependencies>
 
-<!--        <dependency>-->
-<!--            <groupId>com.csp.github</groupId>-->
-<!--            <artifactId>tenant</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--            <classifier>client</classifier>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>

@@ -2,20 +2,20 @@ package com.csp.github.base.web.exception;
 
 
 import com.csp.github.base.common.entity.DefaultResultType;
+import com.csp.github.base.common.entity.Result;
 import com.csp.github.base.common.exception.BaseException;
 import com.csp.github.base.common.exception.ServiceException;
 import com.csp.github.base.common.exception.ServiceSpecialException;
-import com.csp.github.base.common.entity.Result;
 import java.util.Objects;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -68,7 +68,11 @@ public class DefaultGlobalExceptionHandlerAdvice {
         StringBuilder sb = new StringBuilder();
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
         for (ConstraintViolation<?> violation : violations) {
-            sb.append(violation.getMessageTemplate());
+            PathImpl path = (PathImpl) violation.getPropertyPath();
+            String name = path.getLeafNode().getName();
+            sb.append(name);
+            sb.append(" ");
+            sb.append(violation.getMessage());
         }
         String msg = sb.toString();
         log.error("自定义参数校验失败:{}", msg);

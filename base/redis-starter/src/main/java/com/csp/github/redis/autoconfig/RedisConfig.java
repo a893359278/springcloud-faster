@@ -3,11 +3,14 @@ package com.csp.github.redis.autoconfig;
 
 import com.csp.github.redis.protobuf.ProtobufRedisTemplate;
 import com.csp.github.redis.protobuf.ProtobufSerializer;
+import com.csp.github.redis.token.TokenStore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -16,8 +19,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @date 2019-11-16 10:59
  */
 @Configuration
-@ConditionalOnMissingBean(name = "redisConfig")
 public class RedisConfig {
+
+
+    @Bean
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisTemplate template = new StringRedisTemplate();
+        template.setConnectionFactory(redisConnectionFactory);
+        return template;
+    }
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
@@ -51,6 +61,12 @@ public class RedisConfig {
 
         template.afterPropertiesSet();
         return template;
+    }
+
+    @Bean
+    @ConditionalOnBean(StringRedisTemplate.class)
+    public TokenStore tokenStore(StringRedisTemplate stringRedisTemplate) {
+        return new TokenStore(stringRedisTemplate);
     }
 }
 

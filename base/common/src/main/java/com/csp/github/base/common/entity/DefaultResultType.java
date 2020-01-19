@@ -37,7 +37,9 @@ public enum DefaultResultType implements ResultType{
     TOKEN_FRESH("50004", "token 需要刷新"),
 
     EXIST("60001", "记录已存在"),
-    NOT_EXIST("60002", "记录不存在");
+    NOT_EXIST("60002", "记录不存在"),
+
+    GETWAY("70001", "网关异常");
 
     DefaultResultType(String code, String msg) {
         this.code = code;

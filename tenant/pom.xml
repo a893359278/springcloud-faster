@@ -59,7 +59,6 @@
             <artifactId>redis-starter</artifactId>
             <optional>true</optional>
         </dependency>
-
     </dependencies>
 
 </project>
