@@ -68,7 +68,7 @@ public class TokenFilter extends OncePerRequestFilter {
                     throw new ServiceException(DefaultResultType.NEED_LOGIN);
                 } else {
                     String uuidToken = tokenStore.generatorUUIDToken();
-                    tokenStore.refreshTenantToken(uuidToken, tenantId);
+                    tokenStore.refreshTenantToken(token, uuidToken, tenantId);
                     writeTokenHeader(response, token);
                 }
             }

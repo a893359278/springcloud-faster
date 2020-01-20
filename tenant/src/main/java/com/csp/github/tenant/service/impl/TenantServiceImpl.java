@@ -1,5 +1,6 @@
 package com.csp.github.tenant.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -99,7 +100,14 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
                 List<TenantPermission> permissionList = tenantServiceCommon.getPermissionList(tenant.getId());
 
                 String token = tokenStore.generatorUUIDToken();
-                tokenStore.saveTenantInfo(tenant.getId(), token, permissionList, tenant);
+
+                List<String> permissions = new ArrayList<>();
+                if (CollectionUtil.isNotEmpty(permissionList)) {
+                    permissions = permissionList.stream()
+                            .map(TenantPermission::getUri)
+                            .collect(Collectors.toList());
+                }
+                tokenStore.saveTenantInfo(tenant.getId(), token, permissions, tenant);
                 return token;
             } else {
                 throw new ServiceException(DefaultResultType.USERNAME_PASSWORD_INCORRECT);

@@ -2,7 +2,10 @@ package com.csp.github.redis.token;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -83,4 +86,13 @@ public class TokenStore {
         ops.set(TENANT_CURRENT_ACCOUNT_STORE_PRE + tenantId , newToken);
     }
 
+
+    public List<String> getTenantPermission(Long tenantId) {
+        String permissions = redisTemplate.opsForValue().get(TENANT_PERMISSION_STORE_PRE + tenantId);
+        if (StrUtil.isNotBlank(permissions)) {
+            return JSON.parseArray(permissions, String.class);
+        } else {
+            return new ArrayList<>();
+        }
+    }
 }

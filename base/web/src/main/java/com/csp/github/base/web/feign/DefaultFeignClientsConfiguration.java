@@ -2,12 +2,15 @@ package com.csp.github.base.web.feign;
 
 import com.csp.github.base.web.hystrix.DefaultHystrixFallbackHandlerFactory;
 import feign.Feign;
+import feign.RequestInterceptor;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.form.spring.converter.SpringManyMultipartFilesReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,6 +25,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -67,5 +72,21 @@ public class DefaultFeignClientsConfiguration implements WebMvcConfigurer {
         FeignJsonResultDecoder jsonResultDecoder = new FeignJsonResultDecoder();
         jsonResultDecoder.setDecoder(new SpringDecoder(() -> httpMessageConverters));
         return jsonResultDecoder;
+    }
+
+    @Bean
+    public RequestInterceptor feignAddHeaderRequestInterceptor() {
+        return template -> {
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = attributes.getRequest();
+            Enumeration<String> headerNames = request.getHeaderNames();
+            if (headerNames != null) {
+                while (headerNames.hasMoreElements()) {
+                    String name = headerNames.nextElement();
+                    String values = request.getHeader(name);
+                    template.header(name, values);
+                }
+            }
+        };
     }
 }

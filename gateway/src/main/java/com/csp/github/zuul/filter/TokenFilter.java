@@ -8,6 +8,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ public class TokenFilter extends ZuulFilter {
 
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String TENANT_DELIVER_ID = "x-tenant-id";
 
     public static final Set<String> loginUrl = new HashSet<>();
 
@@ -66,24 +68,42 @@ public class TokenFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         if (!isRequestLogin(request)) {
-            String token = resolveToken(request);
-            if (StrUtil.isNotEmpty(token)) {
-                Long tenantId = tokenStore.getTenantRefreshToken(token);
-                if (Objects.isNull(tenantId)) {
-                    tenantId = tokenStore.getTenantExpireToken(token);
+            if (isTenantToken(request)) {
+                String token = resolveToken(request);
+                if (StrUtil.isNotEmpty(token)) {
+                    Long tenantId = tokenStore.getTenantRefreshToken(token);
                     if (Objects.isNull(tenantId)) {
-                        throw new ServiceException(DefaultResultType.NEED_LOGIN);
-                    } else {
-                        String uuidToken = tokenStore.generatorUUIDToken();
-                        tokenStore.refreshTenantToken(token, uuidToken, tenantId);
-                        needFreshToken(ctx.getResponse(), uuidToken);
+                        tenantId = tokenStore.getTenantExpireToken(token);
+                        if (Objects.isNull(tenantId)) {
+                            throw new ServiceException(DefaultResultType.NEED_LOGIN);
+                        } else {
+                            String uuidToken = tokenStore.generatorUUIDToken();
+                            tokenStore.refreshTenantToken(token, uuidToken, tenantId);
+                            needFreshToken(ctx.getResponse(), uuidToken);
+                        }
                     }
+                    ctx.addZuulRequestHeader(TENANT_DELIVER_ID, tenantId.toString());
+//                    checkPermission(tenantId, request.getRequestURI());
+                } else {
+                    throw new ServiceException(DefaultResultType.NEED_LOGIN);
                 }
-            } else {
-                throw new ServiceException(DefaultResultType.NEED_LOGIN);
             }
         }
         return null;
+    }
+
+
+    private boolean isTenantToken(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return uri.startsWith("/tenant");
+    }
+
+    private void checkPermission(Long tenantId, String requestURI) {
+        List<String> permission = tokenStore.getTenantPermission(tenantId);
+        if (!permission.contains(requestURI)) {
+            // todo 再次尝试获取权限
+            throw new ServiceException(DefaultResultType.ACCESS_DENIED);
+        }
     }
 
     private boolean isRequestLogin(HttpServletRequest request) {

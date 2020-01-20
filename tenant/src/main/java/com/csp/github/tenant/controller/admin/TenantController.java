@@ -9,8 +9,10 @@ import com.csp.github.tenant.entity.TenantPermission;
 import com.csp.github.tenant.service.ITenantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Enumeration;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +42,7 @@ public class TenantController {
 
     @ApiOperation(value = "通过 username 获取租户")
     @GetMapping("/tenant/username")
-    public Tenant getTenantByUsername(@NotEmpty String username) {
+    public Tenant getTenantByUsername(HttpServletRequest request, @NotEmpty String username) {
         return tenantService.getAdminByUsername(username);
     }
 
