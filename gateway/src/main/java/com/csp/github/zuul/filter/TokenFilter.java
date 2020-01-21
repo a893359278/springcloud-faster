@@ -43,12 +43,12 @@ public class TokenFilter extends ZuulFilter {
     }
 
     private static void initLoginUrl() {
-        loginUrl.add("/tenant/login");
+        loginUrl.add("/tenant/tenant/login");
     }
 
     private static void initNotNeedLoginUrl() {
         // todo 仅为测试路由，无实际意义
-//        notNeedLoginUrl.add("/tenant/tenant/username/**");
+        notNeedLoginUrl.add("/tenant/tenant/username/**");
         notNeedLoginUrl.add("/tenant/tenant/test/*");
     }
 

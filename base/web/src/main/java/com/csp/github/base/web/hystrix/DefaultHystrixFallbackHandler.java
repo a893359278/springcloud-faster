@@ -17,7 +17,6 @@ public class DefaultHystrixFallbackHandler extends HystrixFallbackHandler {
 
     @Override
     protected Object handle(Object proxy, Method method, Object[] args) throws Throwable {
-        Class<?> returnType = method.getReturnType();
         return Result.fail();
     }
 }

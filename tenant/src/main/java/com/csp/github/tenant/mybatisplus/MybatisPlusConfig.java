@@ -9,11 +9,13 @@ import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
+import com.csp.github.base.web.utils.RequestUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -21,6 +23,8 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author 陈少平
@@ -52,15 +56,7 @@ public class MybatisPlusConfig {
 
             @Override
             public Expression getTenantId(boolean where) {
-//                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//                if (authentication.getClass().isAssignableFrom(MemberAuthenticationToken.class)) {
-//                    MemberAuthenticationToken token = (MemberAuthenticationToken) authentication;
-//                    return new LongValue(token.getUnitId());
-//                } if (authentication.getClass().isAssignableFrom(UnitAuthenticationToken.class)) {
-//                    UnitAuthenticationToken token = (UnitAuthenticationToken) authentication;
-//                    return new LongValue(token.getUnitId());
-//                }
-                return new LongValue(1);
+                return new LongValue(RequestUtils.getTenantId());
             }
 
             @Override

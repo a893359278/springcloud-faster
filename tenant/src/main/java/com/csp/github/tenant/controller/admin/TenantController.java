@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Slf4j
 @RestController
+@RequestMapping(value = "/tenant")
 @Api(tags = "TenantController", description = "单元后台用户管理")
 public class TenantController {
 
@@ -40,8 +42,8 @@ public class TenantController {
 
 
     @ApiOperation(value = "通过 username 获取租户")
-    @GetMapping("/tenant/username")
-    public Tenant getTenantByUsername(HttpServletRequest request, @NotEmpty String username) {
+    @GetMapping("/username")
+    public Tenant getTenantByUsername(@NotEmpty String username) {
         return tenantService.getAdminByUsername(username);
     }
 
