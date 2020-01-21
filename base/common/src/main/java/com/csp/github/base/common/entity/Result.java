@@ -47,6 +47,10 @@ public class Result {
         return new Result(DefaultResultType.SYS_BUSI.getCode(), DefaultResultType.SYS_BUSI.getMsg());
     }
 
+    public static Result fail(String msg) {
+        return new Result(DefaultResultType.SYS_BUSI.getCode(), new Object(), msg);
+    }
+
     public static Result fail(String code, String msg) {
         return new Result(code, new Object(), msg);
     }

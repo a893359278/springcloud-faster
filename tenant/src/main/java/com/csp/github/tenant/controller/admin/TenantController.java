@@ -9,7 +9,6 @@ import com.csp.github.tenant.entity.TenantPermission;
 import com.csp.github.tenant.service.ITenantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.Enumeration;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

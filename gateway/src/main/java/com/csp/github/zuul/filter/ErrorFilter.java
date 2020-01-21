@@ -23,20 +23,22 @@ public class ErrorFilter extends SendErrorFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         Throwable throwable = ctx.getThrowable();
         Throwable cause = throwable.getCause();
-        if (cause instanceof ServiceException) {
-            ServiceException ex = (ServiceException) cause;
-            writerError(ex);
-        }
+        writerError(cause);
         return null;
     }
 
-    private void writerError(ServiceException ex) {
+    private void writerError(Throwable ex) {
         try {
             RequestContext ctx = RequestContext.getCurrentContext();
             HttpServletResponse response = ctx.getResponse();
             response.setContentType("application/json;charset=utf-8");
             PrintWriter writer = response.getWriter();
-            writer.write(JSONObject.toJSONString(Result.fail(ex)));
+            if (ex instanceof ServiceException) {
+                ServiceException serviceException = (ServiceException) ex;
+                writer.write(JSONObject.toJSONString(Result.fail(serviceException)));
+            } else {
+                writer.write(JSONObject.toJSONString(Result.fail(ex.getMessage())));
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
