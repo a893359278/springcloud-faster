@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.csp.github.base.common.entity.DefaultResultType;
 import com.csp.github.base.common.exception.ServiceException;
+import com.csp.github.base.web.utils.RequestUtils;
 import com.csp.github.redis.token.TokenStore;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -29,9 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenFilter extends ZuulFilter {
 
-    public static final String TOKEN_HEADER = "Authorization";
-    public static final String TOKEN_PREFIX = "Bearer ";
-    public static final String TENANT_DELIVER_ID = "x-tenant-id";
+
 
     public static final Set<String> loginUrl = new HashSet<>();
 
@@ -84,7 +83,7 @@ public class TokenFilter extends ZuulFilter {
             if (needLogin(request) && isTenantToken(request)) {
                 Long tenantId = checkToken(ctx, request);
                 checkPermission(tenantId, request.getRequestURI());
-                ctx.addZuulRequestHeader(TENANT_DELIVER_ID, tenantId.toString());
+                ctx.addZuulRequestHeader(RequestUtils.TENANT_DELIVER_ID, tenantId.toString());
             }
         }
         return null;
@@ -187,9 +186,9 @@ public class TokenFilter extends ZuulFilter {
     }
 
     private String resolveToken(HttpServletRequest request) {
-        String header = request.getHeader(TOKEN_HEADER);
+        String header = request.getHeader(RequestUtils.TOKEN_HEADER);
         if (StrUtil.isNotEmpty(header)) {
-            String[] tokens = header.split(TOKEN_PREFIX);
+            String[] tokens = header.split(RequestUtils.TOKEN_PREFIX);
             if (tokens.length != 2) {
                 throw new ServiceException(DefaultResultType.TOKEN_ILLEGAL);
             }

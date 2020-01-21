@@ -12,10 +12,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class RequestUtils {
 
+    public static final String TOKEN_HEADER = "Authorization";
+    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String TENANT_DELIVER_ID = "x-tenant-id";
+
     public static Long getTenantId() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        String header = request.getHeader("x-tenant-id");
+        String header = request.getHeader(TENANT_DELIVER_ID);
         if (StrUtil.isBlank(header)) {
             throw new ServiceException("tenantId 不存在");
         }
