@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.netflix.zuul.filters.Route;
 import org.springframework.cloud.netflix.zuul.filters.RouteLocator;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
@@ -16,7 +16,7 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
  * @author 陈少平
  * @date 2019-12-08 13:47
  */
-@Component
+@Configuration
 @Primary
 @ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
 public class SwaggerDocumentConfig implements SwaggerResourcesProvider {

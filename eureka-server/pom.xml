@@ -20,8 +20,8 @@
         </dependency>
 
         <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <groupId>com.csp.github.base</groupId>
+            <artifactId>boot-admin-client-starter</artifactId>
         </dependency>
     </dependencies>
 

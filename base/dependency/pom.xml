@@ -44,6 +44,7 @@
         <csp.fastjson.version>1.0-SNAPSHOT</csp.fastjson.version>
         <csp.redis.version>1.0-SNAPSHOT</csp.redis.version>
         <csp.auth.version>1.0-SNAPSHOT</csp.auth.version>
+        <boot.admin.client.version>1.0-SNAPSHOT</boot.admin.client.version>
     </properties>
 
     <dependencyManagement>
@@ -85,6 +86,11 @@
                 <groupId>com.csp.github</groupId>
                 <artifactId>auth</artifactId>
                 <version>${csp.auth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csp.github.base</groupId>
+                <artifactId>boot-admin-client-starter</artifactId>
+                <version>${boot.admin.client.version}</version>
             </dependency>
 
 

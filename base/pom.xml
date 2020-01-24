@@ -22,5 +22,6 @@
         <module>swagger</module>
         <module>fastjson</module>
         <module>redis-starter</module>
+        <module>boot-admin-client-starter</module>
     </modules>
 </project>
