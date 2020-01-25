@@ -45,7 +45,6 @@ public class RestResultResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
             Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        System.out.println(body);
         if (null == body) {
             return Result.ok();
         } else {

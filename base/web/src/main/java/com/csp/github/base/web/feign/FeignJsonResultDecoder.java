@@ -37,7 +37,6 @@ public class FeignJsonResultDecoder implements Decoder {
     @Override
     public Object decode(final Response response, Type type)
             throws IOException, FeignException {
-        System.out.println(type.getTypeName());
 
         if (isParameterizeHttpEntity(type)) {
             type = ((ParameterizedType) type).getActualTypeArguments()[0];
