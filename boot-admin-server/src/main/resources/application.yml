@@ -1,13 +1,22 @@
 spring:
   application:
     name: admin-server
+  security:
+    user:
+      name: admin
+      password: admin
+  boot:
+    admin:
+      client:
+        username: admin
+        password: admin
 server:
   port: 9110
 eureka:
   client:
     registryFetchIntervalSeconds: 5
     service-url:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761/eureka/}
   instance:
     leaseRenewalIntervalInSeconds: 10
     health-check-url-path: /actuator/health

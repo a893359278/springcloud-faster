@@ -1,14 +1,5 @@
 server:
   port: 11110
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: ALWAYS
 zuul:
   SendErrorFilter:
     error:

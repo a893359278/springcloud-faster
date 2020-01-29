@@ -61,11 +61,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.csp.github.base</groupId>
-            <artifactId>boot-admin-client-starter</artifactId>
-        </dependency>
-
     </dependencies>
 
     <!-- maven 多环境打包 -->

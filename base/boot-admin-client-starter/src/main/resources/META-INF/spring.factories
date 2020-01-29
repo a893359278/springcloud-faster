@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.csp.github.base.adminclient.autoconfig.SpringBootAdminClientAutoConfig
