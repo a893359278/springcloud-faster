@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 
 /**
  * 在 zuul 转发之前拦截
@@ -29,8 +30,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class TokenFilter extends ZuulFilter {
-
-
 
     public static final Set<String> loginUrl = new HashSet<>();
 
@@ -49,11 +48,18 @@ public class TokenFilter extends ZuulFilter {
         // todo 仅为测试路由，无实际意义
         notNeedLoginUrl.add("/tenant/tenant/username/**");
         notNeedLoginUrl.add("/tenant/tenant/test/*");
+        notNeedLoginUrl.add("/tenant/*.html");
+        notNeedLoginUrl.add("/**/swagger-ui.html");
+        notNeedLoginUrl.add("/**/swagger-resources/**");
+        notNeedLoginUrl.add("/**/api-docs");
+
     }
 
     @Lazy
     @Autowired
     TokenStore tokenStore;
+
+    AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     public String filterType() {
@@ -117,41 +123,10 @@ public class TokenFilter extends ZuulFilter {
 
     private boolean urlMatch(String uri, Set<String> urls) {
         if (CollectionUtil.isNotEmpty(urls)) {
-            return urls.stream().anyMatch(item -> doUrlMatch(uri, item));
+            return  urls.stream().anyMatch(item -> antPathMatcher.match(item, uri));
         } else {
             return false;
         }
-    }
-
-    private boolean doUrlMatch(String uri, String source) {
-        source = trimEndString(source, "/");
-        String tmpUri = trimEndString(uri, "/");
-        String[] sources = source.split("/");
-        String[] target = tmpUri.split("/");
-
-        for (int i = 0; i < sources.length; i++) {
-
-
-            String sourceUrl = sources[i];
-
-            if (sourceUrl.equals("**")) {
-                return true;
-            }
-
-            if (sourceUrl.equals("*")) {
-                continue;
-            }
-
-            if (sourceUrl.startsWith("{") && sourceUrl.endsWith("}")) {
-                continue;
-            }
-
-            String targetUrl = target[i];
-            if (!targetUrl.equals(sourceUrl)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private String trimEndString(String source, String target) {
@@ -171,7 +146,7 @@ public class TokenFilter extends ZuulFilter {
     private void checkPermission(Long tenantId, String requestURI) {
         List<String> permission = tokenStore.getTenantPermission(tenantId);
         if (CollectionUtil.isNotEmpty(permission)) {
-            boolean match = permission.stream().anyMatch(item -> doUrlMatch(requestURI, item));
+            boolean match = permission.stream().anyMatch(item -> antPathMatcher.match(item, requestURI));
             if (!match) {
                 throw new ServiceException(DefaultResultType.ACCESS_DENIED);
             }

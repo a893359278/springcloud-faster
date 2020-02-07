@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
@@ -35,12 +33,10 @@ public class RestResultResponseAdvice implements ResponseBodyAdvice<Object> {
             return method.isAnnotationPresent(GetMapping.class)
                     || method.isAnnotationPresent(PostMapping.class)
                     || method.isAnnotationPresent(PutMapping.class)
-                    || method.isAnnotationPresent(DeleteMapping.class)
-                    || (method.isAnnotationPresent(RequestMapping.class) && method.isAnnotationPresent(ResponseBody.class));
+                    || method.isAnnotationPresent(DeleteMapping.class);
         }
         return false;
     }
-
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,

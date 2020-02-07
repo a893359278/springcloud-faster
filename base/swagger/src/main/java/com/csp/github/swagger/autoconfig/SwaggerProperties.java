@@ -27,6 +27,6 @@ public class SwaggerProperties {
     private String email = "18250073990@163.com";
     private String creator = "陈少平";
     private String url = "https://segmentfault.com/u/xinwusitiandikuan/about";
-    private String authKey = "Authentication-token";
+    private String authKey = "Authentication";
     private String excludedEnv = "!prod";
 }

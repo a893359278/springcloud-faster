@@ -48,21 +48,19 @@
         <dependency>
             <groupId>com.csp.github.base</groupId>
             <artifactId>swagger</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.csp.github.base</groupId>
             <artifactId>redis-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>
