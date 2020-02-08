@@ -173,6 +173,6 @@ auth 模块 是由个人基于 [mall](https://github.com/macrozheng/mall "mall")
 ## 作者联系方式
 **欢迎探讨改进项目**
 
-微信：a792966514
-思否：[思否](https://segmentfault.com/u/xinwusitiandikuan "思否")
-Email: 18250073990@163.com
++ 微信：a792966514
++ 思否：[思否](https://segmentfault.com/u/xinwusitiandikuan "思否")
++ Email: 18250073990@163.com
