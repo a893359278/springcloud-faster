@@ -169,3 +169,10 @@ swagger starter
 + **auth**
 
 auth 模块 是由个人基于 [mall](https://github.com/macrozheng/mall "mall") 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了，**后续会考虑把该项目开源**
+
+## 作者联系方式
+**欢迎探讨改进项目**
+
+微信：a792966514
+思否：[思否](https://segmentfault.com/u/xinwusitiandikuan "思否")
+Email: 18250073990@163.com

@@ -156,8 +156,7 @@ public class TokenFilter extends ZuulFilter {
     }
 
     private boolean isRequestLogin(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        return loginUrl.contains(trimEndString(uri, "/"));
+        return urlMatch(request.getRequestURI(), loginUrl);
     }
 
     private String resolveToken(HttpServletRequest request) {
