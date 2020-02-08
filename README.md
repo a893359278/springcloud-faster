@@ -154,9 +154,13 @@ redis starter，封装了 protobuf
 
 swagger starter
 
-+ **web**
++ **base.web**
 
 主要封装了 histrix，全局的返回值处理，全局的 feign 返回值解码
+
++ **base.starter**
+
+封装了快速开发应用的依赖，以及 client 打包机制
 
 + **tenant**
 
