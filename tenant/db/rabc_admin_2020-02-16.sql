@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 39.108.252.77 (MySQL 5.7.28-log)
-# Database: mall_shop
-# Generation Time: 2020-01-19 06:34:20 +0000
+# Host: 127.0.0.1 (MySQL 5.7.26)
+# Database: rabc_admin
+# Generation Time: 2020-02-16 09:36:03 +0000
 # ************************************************************
 
 
@@ -22,6 +22,8 @@
 
 # Dump of table tenant
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tenant`;
 
 CREATE TABLE `tenant` (
   `id` bigint(20) NOT NULL,
@@ -65,6 +67,8 @@ UNLOCK TABLES;
 # Dump of table tenant_admin_login_log
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `tenant_admin_login_log`;
+
 CREATE TABLE `tenant_admin_login_log` (
   `id` bigint(20) NOT NULL,
   `tenant_id` bigint(20) DEFAULT NULL,
@@ -79,6 +83,8 @@ CREATE TABLE `tenant_admin_login_log` (
 
 # Dump of table tenant_admin_permission_relation
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tenant_admin_permission_relation`;
 
 CREATE TABLE `tenant_admin_permission_relation` (
   `id` bigint(20) NOT NULL,
@@ -102,6 +108,8 @@ UNLOCK TABLES;
 # Dump of table tenant_admin_role_relation
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `tenant_admin_role_relation`;
+
 CREATE TABLE `tenant_admin_role_relation` (
   `id` bigint(20) NOT NULL,
   `tenant_id` bigint(20) DEFAULT NULL,
@@ -122,6 +130,8 @@ UNLOCK TABLES;
 
 # Dump of table tenant_permission
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tenant_permission`;
 
 CREATE TABLE `tenant_permission` (
   `id` bigint(20) NOT NULL,
@@ -144,7 +154,7 @@ LOCK TABLES `tenant_permission` WRITE;
 
 INSERT INTO `tenant_permission` (`id`, `pid`, `tenant_id`, `name`, `value`, `icon`, `type`, `uri`, `status`, `create_time`, `sort`, `update_time`)
 VALUES
-	(1212307963880194049,0,1211177466152165378,'qwe','string','qwe',1,'string',0,'2020-01-01 17:41:57',0,'2020-01-01 17:41:57');
+	(1212307963880194049,0,1211177466152165378,'qwe','string','qwe',1,'/tenant/tenant/username/',0,'2020-01-01 17:41:57',0,'2020-01-01 17:41:57');
 
 /*!40000 ALTER TABLE `tenant_permission` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -152,6 +162,8 @@ UNLOCK TABLES;
 
 # Dump of table tenant_role
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tenant_role`;
 
 CREATE TABLE `tenant_role` (
   `id` bigint(20) NOT NULL,
@@ -180,6 +192,8 @@ UNLOCK TABLES;
 # Dump of table tenant_role_permission_relation
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `tenant_role_permission_relation`;
+
 CREATE TABLE `tenant_role_permission_relation` (
   `id` bigint(20) NOT NULL,
   `role_id` bigint(20) DEFAULT NULL,
@@ -191,6 +205,8 @@ CREATE TABLE `tenant_role_permission_relation` (
 
 # Dump of table tenant_user_role
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tenant_user_role`;
 
 CREATE TABLE `tenant_user_role` (
   `id` int(11) NOT NULL,

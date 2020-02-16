@@ -62,7 +62,6 @@
         </dependency>
 
     </dependencies>
-
     <!-- maven 多环境打包 -->
     <build>
         <plugins>
@@ -91,6 +90,9 @@
                     </plugin>
                 </plugins>
             </build>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <!-- 打包指定资源 -->
         <profile>

@@ -1,8 +1,8 @@
 server:
-  port: 8761
+  port: ${SERVER_PORT:8761}
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
     # 向服务注册中心注册时，使用 IP 地址 而不是域名
     prefer-ip-address: true
   client:

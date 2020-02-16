@@ -29,7 +29,7 @@
 
 
 ## 目前缺陷
-目前将是否需要登录的判断放在了网关模块。如果新增一个微服务。有了不需要登录的新接口，那么需要重启网关，这样的设计，还是比较麻烦。
+1、目前将是否需要登录的判断放在了网关模块。如果新增一个微服务。有了不需要登录的新接口，那么需要重启网关，这样的设计，还是比较麻烦。
 
 **方案A：**
 
@@ -38,6 +38,8 @@
 **方案B：**
 
 重新梳理网关的职能，重新开发，将是否登录下放到各个服务提供者。
+
+2、Redis 还未实现原子性，执行多条 Redis 指令可能会出现高并发危险。
 
 
 
@@ -125,50 +127,20 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 
 
 ## 模块规划
-
-+ **base.dependency**
-
-统一依赖使用
-
-+ **base.parent**
-
-统一 nexus 
-
-+ **base.common**
-
-公共通用类
-
-+ **base.fastjson**
-
-fastJson starter
-
-+ **base.resource**
-
-资源收集模块
-
-+ **base.redis-starter**
-
-redis starter，封装了 protobuf
-
-+ **base.swagger**
-
-swagger starter
-
-+ **base.web**
-
-主要封装了 histrix，全局的返回值处理，全局的 feign 返回值解码
-
-+ **base.starter**
-
-封装了快速开发应用的依赖，以及 client 打包机制
-
-+ **tenant**
-
-多租户模块，实现了基本的 rbac 权限认证。
-
-+ **auth**
-
-auth 模块 是由个人基于 [mall](https://github.com/macrozheng/mall "mall") 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了，**后续会考虑把该项目开源**
+```
+framework
+├──base.dependency 统一依赖使用
+├──base.parent 统一 nexus 
+├──base.common 公共通用类
+├──base.fastjson fastJson starter
+├──base.resource 资源收集模块
+├──base.redis-starter redis starter，封装了 protobuf
+├──base.swagger swagger starter
+├──base.web 主要封装 histrix，全局的返回值处理，全局的 feign 返回值解码
+├──base.starter 封装了快速开发应用的依赖，以及 client 打包机制
+├──tenant 多租户模块，实现了基本的 rbac 权限认证。
+├──auth auth 模块是由个人基于 [mall](https://github.com/macrozheng/mall "mall") 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了，**后续会考虑把该项目开源**
+```
 
 ## 作者联系方式
 **欢迎探讨改进项目**
@@ -176,3 +148,12 @@ auth 模块 是由个人基于 [mall](https://github.com/macrozheng/mall "mall")
 + 微信：a792966514
 + 思否：[思否](https://segmentfault.com/u/xinwusitiandikuan "思否")
 + Email: 18250073990@163.com
+
+## Q&A
+Q: 微服务还有那么多组件为什么不集成
+
+A：相对的这些组件的集成比较简单，所以就没集成。并且也不是每个企业的微服务有那么复杂。因为只集成开发基本够用的。
+
+Q：为什么之前将 Auth 集成到网关之后又移除了
+
+A：微服务中 使用 spring security， 个人感觉还是比较麻烦。因此又将 Auth 移除了。自己写了 简单的用户验证。

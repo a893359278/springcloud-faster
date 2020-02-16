@@ -15,12 +15,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-
-<!--        <dependency>-->
-<!--            <groupId>com.csp.github.base</groupId>-->
-<!--            <artifactId>resource</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>

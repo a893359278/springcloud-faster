@@ -1,0 +1,108 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - '3356:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - ./mysql/conf:/etc/mysql
+
+  redis:
+    image: redis
+    ports:
+      - '6339:6379'
+    volumes:
+      - ./data:/data
+
+#  rocketMQ-server:
+#    image: foxiswho/rocketmq:server-4.5.1
+#    environment:
+#      JAVA_OPT_EXT: '-server -Xms128m -Xmx128m'
+#      JAVA_OPTS: '-Duser.home=/opt'
+#    volumes:
+#      - ./rocketMQ/server/log:/opt/logs
+#      - ./rocketMQ/server/store:/opt/store
+#    ports:
+#      - '9876:9876'
+#
+#  rocketMQ-client:
+#    image: foxiswho/rocketmq:broker-4.5.1
+#    environment:
+#      JAVA_OPT_EXT: '-server -Xms128m -Xmx128m'
+#      JAVA_OPTS: '-Duser.home=/opt'
+#      NAMESRV_ADDR: 'rocketMQ-server:9876'
+#    volumes:
+#      - ./rocketMQ/client/log:/opt/logs
+#      - ./rocketMQ/client/store:/opt/store
+#      - ./rocketMQ/client/broker.conf:/etc/rocketmq/broker.conf
+#      - ./wait-for-it.sh:/wait-for-it.sh
+#    ports:
+#      - '10909:10909'
+#      - '10911:10911'
+#    depends_on:
+#      - rocketMQ-server
+#    command: ["/bin/sh", "-c", " sh /wait-for-it.sh rocketMQ-server:9876 -t 100 -- cd /opt/rocketmq-4.5.1/bin && /opt/rocketmq-4.5.1/bin/mqbroker -c /etc/rocketmq/broker.conf"]
+#    restart: always
+#
+#  rocketMQ-console-ng:
+#    image: styletang/rocketmq-console-ng
+#    environment:
+#      JAVA_OPTS: -Xms128m -Xmx128m
+#    depends_on:
+#      - rocketMQ-server
+#      - rocketMQ-client
+#    ports:
+#      - '8082:8080'
+#    restart: always
+
+
+  eureka-server:
+    build:
+      context: ../eureka-server
+    image: eureka-server
+    ports:
+      - '8761:8761'
+    restart: always
+
+  gateway:
+    build:
+      context: ../gateway
+    image: gateway
+    depends_on:
+      - eureka-server
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    ports:
+      - '11110:11110'
+    entrypoint: "sh /wait-for-it.sh redis:6379 -t 100 -- sh /wait-for-it.sh eureka-server:8761 -t 100 -- java -Xms128m -Xmx128m -jar /app.jar"
+    restart: always
+
+  boot-admin-server:
+    build:
+      context: ../boot-admin-server
+    image: boot-admin-server
+    depends_on:
+      - eureka-server
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    ports:
+      - '9110:9110'
+    entrypoint: "sh /wait-for-it.sh eureka-server:8761 -t 100 -- java -Xms128m -Xmx128m -jar /app.jar"
+    restart: always
+
+  tenant:
+    build:
+      context: ../tenant
+    image: tenant
+    depends_on:
+      - mysql
+      - redis
+      - eureka-server
+    ports:
+      - '8001:8001'
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    entrypoint: "sh /wait-for-it.sh mysql:3306 -t 100 -- sh /wait-for-it.sh redis:6379 -t 100 -- sh /wait-for-it.sh eureka-server:8761 -t 100 -- java -Xms128m -Xmx128m -jar  /app.jar"
+    restart: always
