@@ -27,6 +27,10 @@ public class RedisConfig {
     public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
+        //开启事务
+        template.setEnableTransactionSupport(true);
+        template.setConnectionFactory(redisConnectionFactory);
+        template.afterPropertiesSet();
         return template;
     }
 
@@ -53,7 +57,7 @@ public class RedisConfig {
     @ConditionalOnMissingBean
     public ProtobufRedisTemplate protobufRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         ProtobufRedisTemplate template = new ProtobufRedisTemplate(redisConnectionFactory);
-        ProtobufSerializer<Object> serializer = new ProtobufSerializer<>();
+        ProtobufSerializer serializer = new ProtobufSerializer();
         template.setKeySerializer(RedisSerializer.string());
         template.setValueSerializer(serializer);
 

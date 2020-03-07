@@ -1,10 +1,6 @@
 package com.csp.github.redis.protobuf;
 
 
-import io.protostuff.LinkedBuffer;
-import io.protostuff.ProtostuffIOUtil;
-import io.protostuff.Schema;
-import io.protostuff.runtime.RuntimeSchema;
 import java.util.Objects;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
@@ -15,43 +11,17 @@ import org.springframework.data.redis.serializer.SerializationException;
  * @author 陈少平
  * @date 2019-11-16 11:52
  */
-public class ProtobufSerializer<T> implements RedisSerializer<T> {
-
-    private static final Schema<SerializeWrap> SERIALIZE_WRAP_SCHEMA = RuntimeSchema.getSchema(SerializeWrap.class);
+public class ProtobufSerializer implements RedisSerializer<Object> {
 
     @Override
     public byte[] serialize(Object t) throws SerializationException {
-
-        if (t == null) {
-            return new byte[0];
-        }
-
-        LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
-        final byte[] bytes;
-
-        try {
-            SerializeWrap wrap = new SerializeWrap();
-            wrap.setObj(t);
-            bytes = ProtostuffIOUtil.toByteArray(wrap, SERIALIZE_WRAP_SCHEMA, buffer);
-        } catch (Exception e) {
-            throw new SerializationException("Cannot serialize" + e.getMessage(), e);
-        } finally {
-            buffer.clear();
-        }
-
-        return bytes;
+       return ProtobufSerializerUtils.serialize(t);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T deserialize(byte[] bytes) throws SerializationException {
-        if (bytes != null && bytes.length != 0) {
-            SerializeWrap wrap = SERIALIZE_WRAP_SCHEMA.newMessage();
-            ProtostuffIOUtil.mergeFrom(bytes, wrap, SERIALIZE_WRAP_SCHEMA);
-            return (T) wrap.getObj();
-        } else {
-            return null;
-        }
+    public Object deserialize(byte[] bytes) throws SerializationException {
+        return ProtobufSerializerUtils.deserialize(bytes);
     }
 
     public static class SerializeWrap {
