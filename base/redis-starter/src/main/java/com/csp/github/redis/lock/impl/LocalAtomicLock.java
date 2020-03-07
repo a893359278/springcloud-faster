@@ -63,8 +63,6 @@ public class LocalAtomicLock implements AtomicLock {
                     Thread.sleep(lock.getFailIntervalTimeUnit().toMillis(lock.getFailInterval()));
                 } catch (InterruptedException ex) {
                     throw new TryLockInterruptedException();
-                } finally {
-                    map.remove(k, v);
                 }
             }
             count--;
