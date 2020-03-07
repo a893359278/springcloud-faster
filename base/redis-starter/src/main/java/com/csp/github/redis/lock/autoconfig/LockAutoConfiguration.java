@@ -9,8 +9,6 @@ import com.csp.github.redis.lock.impl.RedisAtomicLock.ProtobufRedisSerialization
 import com.csp.github.redis.lock.impl.RedisAtomicLock.StringRedisSerializationAdapter;
 import com.csp.github.redis.protobuf.ProtobufRedisTemplate;
 import java.util.Objects;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
