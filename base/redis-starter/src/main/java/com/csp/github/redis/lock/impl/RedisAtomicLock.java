@@ -2,9 +2,10 @@ package com.csp.github.redis.lock.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.csp.github.redis.lock.AtomicLock;
-import com.csp.github.redis.lock.LockProperty;
+import com.csp.github.redis.lock.autoconfig.LockProperty;
 import com.csp.github.redis.lock.LockType;
 import com.csp.github.redis.lock.SerializationType;
+import com.csp.github.redis.lock.exception.InternalError;
 import com.csp.github.redis.lock.exception.TryLockFailException;
 import com.csp.github.redis.lock.exception.TryLockInterruptedException;
 import com.csp.github.redis.protobuf.ProtobufRedisTemplate;
@@ -45,7 +46,7 @@ public class RedisAtomicLock implements AtomicLock {
                 return redisTemplate;
             }
         }
-        return null;
+        throw new InternalError("not found serialization type: " + serializationType.name(), "you can try implements RedisSerializationAdapter interface. and then call RedisAtomicLock addRedisTemplateWrap() method");
     }
 
     @Override

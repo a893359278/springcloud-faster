@@ -3,6 +3,7 @@ package com.csp.github.redis.lock;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.csp.github.base.common.exception.ServiceException;
+import com.csp.github.redis.lock.autoconfig.LockProperty;
 import com.csp.github.redis.lock.exception.NotFoundAtomicLock;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

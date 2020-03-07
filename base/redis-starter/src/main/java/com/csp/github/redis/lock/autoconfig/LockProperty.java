@@ -1,11 +1,14 @@
-package com.csp.github.redis.lock;
+package com.csp.github.redis.lock.autoconfig;
 
+import com.csp.github.redis.lock.LockType;
+import com.csp.github.redis.lock.SerializationType;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * provide global configuration override Lock annotation
  * @author 陈少平
  * @date 2020-03-07 08:26
  */

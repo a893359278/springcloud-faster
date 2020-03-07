@@ -1,4 +1,4 @@
-package com.csp.github.redis.lock;
+package com.csp.github.redis.lock.autoconfig;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

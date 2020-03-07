@@ -1,5 +1,6 @@
 package com.csp.github.redis.lock;
 
+import com.csp.github.redis.lock.autoconfig.LockProperty;
 import java.util.function.Supplier;
 
 /**

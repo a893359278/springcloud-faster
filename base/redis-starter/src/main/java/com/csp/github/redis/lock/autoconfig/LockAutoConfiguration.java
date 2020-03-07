@@ -1,12 +1,17 @@
-package com.csp.github.redis.lock;
+package com.csp.github.redis.lock.autoconfig;
 
 import com.csp.github.base.common.exception.ServiceException;
+import com.csp.github.redis.autoconfig.RedisConfig;
+import com.csp.github.redis.lock.LockAspect;
 import com.csp.github.redis.lock.impl.LocalAtomicLock;
 import com.csp.github.redis.lock.impl.RedisAtomicLock;
 import com.csp.github.redis.lock.impl.RedisAtomicLock.ProtobufRedisSerializationAdapter;
 import com.csp.github.redis.lock.impl.RedisAtomicLock.StringRedisSerializationAdapter;
 import com.csp.github.redis.protobuf.ProtobufRedisTemplate;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,6 +25,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @date 2020-03-06 20:27
  */
 @Configuration
+@AutoConfigureAfter(RedisConfig.class)
 @EnableConfigurationProperties(LockProperty.class)
 public class LockAutoConfiguration {
 

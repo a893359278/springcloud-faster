@@ -2,7 +2,7 @@ package com.csp.github.redis.lock.impl;
 
 
 import com.csp.github.redis.lock.AtomicLock;
-import com.csp.github.redis.lock.LockProperty;
+import com.csp.github.redis.lock.autoconfig.LockProperty;
 import com.csp.github.redis.lock.LockType;
 import com.csp.github.redis.lock.SerializationType;
 import com.csp.github.redis.lock.exception.TryLockFailException;
