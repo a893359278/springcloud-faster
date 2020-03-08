@@ -58,4 +58,10 @@ public @interface Lock {
      * @return
      */
     TimeUnit failIntervalTimeUnit() default TimeUnit.MILLISECONDS;
+
+    /**
+     * if true, global LockProperty will replace it
+     * @return
+     */
+    boolean override() default true;
 }

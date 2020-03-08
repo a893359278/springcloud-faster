@@ -66,28 +66,43 @@ public class LockAspect {
      */
     private LockProperty shouldReplaceLockConfig(Lock lockAnnotation, LockProperty property) {
         LockProperty clone = property.clone();
-        if (Objects.isNull(clone.getType())) {
-            clone.setType(lockAnnotation.type());
-        }
-        if (Objects.isNull(clone.getTimeUnit())) {
-            clone.setTimeUnit(lockAnnotation.timeUnit());
-        }
-        if (Objects.isNull(clone.getTime())) {
-            clone.setTime(lockAnnotation.time());
-        }
-        if (Objects.isNull(clone.getFailTryCount())) {
-            clone.setFailTryCount(lockAnnotation.failTryCount());
-        }
-        if (Objects.isNull(clone.getFailInterval())) {
-            clone.setFailInterval(lockAnnotation.failInterval());
-        }
-        if (Objects.isNull(clone.getFailIntervalTimeUnit())) {
-            clone.setFailIntervalTimeUnit(lockAnnotation.failIntervalTimeUnit());
-        }
-        if (Objects.isNull(clone.getSerialization())) {
-            clone.setSerialization(lockAnnotation.serialization());
+        boolean override = lockAnnotation.override();
+        if (override) {
+            if (Objects.isNull(clone.getType())) {
+                clone.setType(lockAnnotation.type());
+            }
+            if (Objects.isNull(clone.getTimeUnit())) {
+                clone.setTimeUnit(lockAnnotation.timeUnit());
+            }
+            if (Objects.isNull(clone.getTime())) {
+                clone.setTime(lockAnnotation.time());
+            }
+            if (Objects.isNull(clone.getFailTryCount())) {
+                clone.setFailTryCount(lockAnnotation.failTryCount());
+            }
+            if (Objects.isNull(clone.getFailInterval())) {
+                clone.setFailInterval(lockAnnotation.failInterval());
+            }
+            if (Objects.isNull(clone.getFailIntervalTimeUnit())) {
+                clone.setFailIntervalTimeUnit(lockAnnotation.failIntervalTimeUnit());
+            }
+            if (Objects.isNull(clone.getSerialization())) {
+                clone.setSerialization(lockAnnotation.serialization());
+            }
+        } else {
+            lockAnnotation2LockProperty(clone, lockAnnotation);
         }
         return clone;
+    }
+
+    private void lockAnnotation2LockProperty(LockProperty clone, Lock lockAnnotation) {
+        clone.setType(lockAnnotation.type());
+        clone.setTimeUnit(lockAnnotation.timeUnit());
+        clone.setTime(lockAnnotation.time());
+        clone.setFailTryCount(lockAnnotation.failTryCount());
+        clone.setFailInterval(lockAnnotation.failInterval());
+        clone.setFailIntervalTimeUnit(lockAnnotation.failIntervalTimeUnit());
+        clone.setSerialization(lockAnnotation.serialization());
     }
 
     private String getLockValue() {
