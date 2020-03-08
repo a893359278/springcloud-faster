@@ -18,11 +18,9 @@
 ### 待开发
 
 + 日志配置统一配置
-
-+ redis 扩展，分布式锁
-
-+ docker 容器化部署
-
++ k8s
++ 新增组件 springCloud-Config
++ 考虑是否用 sentinel 替换 hystrix。
 + 独立的 spring security 权限校验模块（代码中的 auth 模块，是由个人基于 mall 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了）
 
   
@@ -38,9 +36,6 @@
 **方案B：**
 
 重新梳理网关的职能，重新开发，将是否登录下放到各个服务提供者。
-
-2、Redis 还未实现原子性，执行多条 Redis 指令可能会出现高并发危险。
-
 
 
 ## 快速开发Demo
@@ -134,7 +129,7 @@ framework
 ├──base.common 公共通用类
 ├──base.fastjson fastJson starter
 ├──base.resource 资源收集模块
-├──base.redis-starter redis starter，封装了 protobuf
+├──base.redis-starter redis starter，封装了 protobuf，原子锁
 ├──base.swagger swagger starter
 ├──base.web 主要封装 histrix，全局的返回值处理，全局的 feign 返回值解码
 ├──base.starter 封装了快速开发应用的依赖，以及 client 打包机制
