@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.csp.github</groupId>
+    <groupId>com.csp.github.base</groupId>
     <artifactId>base</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -22,5 +22,18 @@
         <module>swagger</module>
         <module>fastjson</module>
         <module>redis-starter</module>
+        <module>mybatis-plus-entity</module>
     </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/116878-release-RJeAi8/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/116878-snapshot-uQ2lhH/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>

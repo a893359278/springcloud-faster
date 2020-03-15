@@ -26,6 +26,7 @@ ribbon:
   ReadTimeout: 30000
   ConnectTimeout: 30000
 
+
 hystrix:
   command:
     default:
@@ -38,3 +39,6 @@ hystrix:
       circuitBreaker:
         enabled: true
         requestVolumeThreshold: 3
+feign:
+  hystrix:
+    enabled: false

@@ -106,20 +106,6 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 这样做还要另外一个目的：swagger 上，可以直接展示实体的属性
 ![image-20191210001927847](https://github.com/a893359278/springcloud-faster/blob/master/images/image-20191210000616099.png)
 
-+ 服务间的依赖，只需打包成 client，然后引入即可，无需重复定义同样的实体类。 client 打包机制，只会把对应的实体， feign 打包进去。（jar 包也会被打包进去，需要自己手动排除）
-
-![image-20191210001927847](https://github.com/a893359278/springcloud-faster/blob/master/images/image-20191210001927847.png)
-
-```xml
- <dependency>
-    <groupId>com.csp.github</groupId>
-    <artifactId>rabc</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <classifier>client</classifier>
- </dependency>
-```
-
-
 
 ## 模块规划
 ```

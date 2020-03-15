@@ -52,6 +52,7 @@ public class TokenFilter extends ZuulFilter {
         notNeedLoginUrl.add("/**/swagger-ui.html");
         notNeedLoginUrl.add("/**/swagger-resources/**");
         notNeedLoginUrl.add("/**/api-docs");
+        notNeedLoginUrl.add("/**");
 
     }
 
