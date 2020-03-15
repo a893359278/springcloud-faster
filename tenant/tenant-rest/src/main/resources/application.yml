@@ -64,3 +64,11 @@ tenant:
     - tenant_admin_permission_relation
     - tenant_admin_role_relation
     - tenant_role_permission_relation
+
+apollo:
+  bootstrap:
+    enabled: true
+  meta: http://localhost:8080
+app:
+  id: tenant-service
+env: DEV

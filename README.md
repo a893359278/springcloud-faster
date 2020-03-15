@@ -19,8 +19,6 @@
 
 + 日志配置统一配置
 + k8s
-+ 新增组件 springCloud-Config
-+ 考虑是否用 sentinel 替换 hystrix。
 + 独立的 spring security 权限校验模块（代码中的 auth 模块，是由个人基于 mall 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了）
 
   
