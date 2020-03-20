@@ -28,18 +28,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class DefaultGlobalExceptionHandlerAdvice {
 
+    @ExceptionHandler(value = {NullPointerException.class})
+    public Result nullPointException(NullPointerException e) {
+        ExceptionHelper.logException(e);
+        return Result.fail("数据走丢啦");
+    }
+
     /**
      * 处理唯一键冲突
      */
     @ExceptionHandler(value = {DuplicateKeyException.class})
     public Result duplicateKeyException(DuplicateKeyException ex) {
-        log.error("primary key duplication ex:{}", ex.getMessage());
+        ExceptionHelper.logException(ex);
         return Result.fail(DefaultResultType.DUPLICATE_PRIMARY_KEY);
     }
 
     @ExceptionHandler(value = {BaseException.class, ServiceException.class})
     public Result serviceException(BaseException ex) {
-        log.error("业务异常:{}", ex.getMsg());
+        ExceptionHelper.logException(ex);
         return Result.fail(ex);
     }
 
@@ -55,10 +61,7 @@ public class DefaultGlobalExceptionHandlerAdvice {
      */
     @ExceptionHandler(NumberFormatException.class)
     public Object numberFormatException(NumberFormatException ex) {
-        String localizedMessage = ex.getLocalizedMessage();
-        StackTraceElement[] stackTrace = ex.getStackTrace();
-        ex.printStackTrace();
-        log.error("参数格式化异常:{}", ex.getMessage());
+        ExceptionHelper.logException(ex);
         return Result.fail(DefaultResultType.FORMAT_EXCEPTION.getCode(), DefaultResultType.FORMAT_EXCEPTION.getMsg());
     }
 
