@@ -26,16 +26,17 @@
         <freemarker.version>2.3.29</freemarker.version>
         <mybatis-plus-generator.version>3.2.0</mybatis-plus-generator.version>
         <fastjson.version>1.2.62</fastjson.version>
-        <swagger.version>2.9.2</swagger.version>
-        <swagger.anootation>1.5.20</swagger.anootation>
         <protobuf.version>1.6.2</protobuf.version>
         <feign-form.version>3.8.0</feign-form.version>
         <hutool.version>5.0.6</hutool.version>
         <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
         <rocketmq-spring-boot-version>2.0.2</rocketmq-spring-boot-version>
         <jwt-version>0.9.0</jwt-version>
+
+        <swagger.version>2.9.2</swagger.version>
         <swagger-models-version>1.5.21</swagger-models-version>
         <swagger-annotations-version>1.5.21</swagger-annotations-version>
+        <swagger-bootstrap-ui-version>1.9.6</swagger-bootstrap-ui-version>
 
         <csp.resource.version>1.0-SNAPSHOT</csp.resource.version>
         <csp.common.version>1.0-SNAPSHOT</csp.common.version>
@@ -186,6 +187,13 @@
             </dependency>
 
             <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>${swagger-bootstrap-ui-version}</version>
+            </dependency>
+
+
+            <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations-version}</version>
@@ -201,12 +209,6 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${swagger.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.anootation}</version>
             </dependency>
 
             <dependency>

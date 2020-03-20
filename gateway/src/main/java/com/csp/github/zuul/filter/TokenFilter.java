@@ -52,6 +52,7 @@ public class TokenFilter extends ZuulFilter {
         notNeedLoginUrl.add("/**/swagger-ui.html");
         notNeedLoginUrl.add("/**/swagger-resources/**");
         notNeedLoginUrl.add("/**/api-docs");
+        notNeedLoginUrl.add("/**/v2/api-docs-ext");
         notNeedLoginUrl.add("/**");
 
     }
@@ -128,14 +129,6 @@ public class TokenFilter extends ZuulFilter {
         } else {
             return false;
         }
-    }
-
-    private String trimEndString(String source, String target) {
-        if (StrUtil.isNotBlank(source) && source.endsWith(target)) {
-            int index = source.lastIndexOf(target);
-            return source.substring(0, index);
-        }
-        return source;
     }
 
 
