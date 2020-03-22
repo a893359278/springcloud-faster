@@ -86,7 +86,7 @@ public class Collectors implements BeanPostProcessor, ApplicationContextAware, C
             }
 
         }, threadName);
-
+        thread.setDaemon(true);
         thread.start();
     }
 

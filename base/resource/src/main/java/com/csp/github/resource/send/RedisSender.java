@@ -1,24 +1,20 @@
 package com.csp.github.resource.send;
 
 import com.csp.github.resource.collection.ResourceProperties;
-import javax.annotation.Resource;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author 陈少平
  * @date 2020-03-22 16:34
  */
-@ConditionalOnMissingBean(RedisSender.class)
-@Component
 public class RedisSender implements Sender {
 
-    @Lazy
-    @Resource(name = "stringRedisTemplate")
-    RedisTemplate redisTemplate;
+    public RedisSender(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    StringRedisTemplate redisTemplate;
 
     @Override
     @SuppressWarnings("unchecked")

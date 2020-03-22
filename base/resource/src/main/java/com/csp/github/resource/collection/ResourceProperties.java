@@ -3,7 +3,7 @@ package com.csp.github.resource.collection;
 import com.csp.github.base.common.exception.InternalException;
 import com.csp.github.resource.consumer.LocalResourceConsumer;
 import com.csp.github.resource.consumer.RedisResourceConsumer;
-import com.csp.github.resource.consumer.ResourceConsumeListener;
+import com.csp.github.resource.consumer.ResourceConsumerListener;
 import com.csp.github.resource.consumer.ResourceConsumer;
 import com.csp.github.resource.consumer.RocketMqResourceConsumer;
 import com.csp.github.resource.send.LocalSender;
@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -64,7 +65,7 @@ public class ResourceProperties implements InitializingBean, ApplicationContextA
 
     @Getter
     @Setter
-    private SendEnum send = SendEnum.rocketMQ;
+    private SendEnum send = SendEnum.redis;
 
     @Getter
     @Setter
@@ -77,7 +78,10 @@ public class ResourceProperties implements InitializingBean, ApplicationContextA
     // implement the class and write your consumed logic
     @Getter
     @Setter
-    private ResourceConsumeListener consumeListener;
+    private Class<? extends ResourceConsumerListener> consumerListenerCls;
+
+    @Getter
+    private ResourceConsumerListener consumerListener;
 
     // 允许自定义过滤策略
     @Getter
@@ -142,15 +146,21 @@ public class ResourceProperties implements InitializingBean, ApplicationContextA
         initFilterStrategy();
         initCollectionStrategy();
         initSender();
-        initConsumer();
+        if (consumerEnable) {
+            initConsumer();
+        }
     }
 
     private void initConsumer() {
         if (Objects.nonNull(this.consumer)) {
             return ;
         }
-        if (Objects.isNull(consumeListener)) {
-            throw new InternalException("because consumerEnable is true,so consumeListener must not null");
+        if (Objects.isNull(consumerListenerCls)) {
+            throw new InternalException("because consumerEnable is true,so consumerListener must not null");
+        } else {
+            try {
+                consumerListener = consumerListenerCls.newInstance();
+            } catch (Exception e) {}
         }
 
         switch (this.send) {
@@ -187,10 +197,12 @@ public class ResourceProperties implements InitializingBean, ApplicationContextA
 
         switch (this.send) {
             case rocketMQ:
-                this.sender = new RocketMqSender();
+                RocketMQTemplate rocketMQTemplate = ac.getBean(RocketMQTemplate.class);
+                this.sender = new RocketMqSender(rocketMQTemplate);
                 break;
             case redis:
-                this.sender = new RedisSender();
+                StringRedisTemplate redisTemplate = ac.getBean(StringRedisTemplate.class);
+                this.sender = new RedisSender(redisTemplate);
                 break;
             case local:
                 this.sender = new LocalSender();

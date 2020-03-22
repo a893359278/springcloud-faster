@@ -65,6 +65,8 @@
         <dependency>
             <groupId>com.csp.github.base</groupId>
             <artifactId>redis-starter</artifactId>
+            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

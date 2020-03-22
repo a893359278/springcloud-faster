@@ -72,3 +72,10 @@ apollo:
 app:
   id: tenant-service
 env: DEV
+
+resources:
+  collector:
+    send: redis
+    enable: true
+    consumer-listener-cls: com.csp.github.tenant.ConsumerTest
+    consumer-enable: true
