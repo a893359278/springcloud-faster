@@ -41,7 +41,7 @@ resources:
 其中 consumer-enable 表示是否启用，默认false。consumer-listener-cls 即实现 ResourceConsumerListener 接口的类
 
 ### 工作原理
-
+![resource-work-flow.png](https://github.com/a893359278/springcloud-faster/blob/master/images/resource-work-flow.png)
 
 ### 待开发
 
