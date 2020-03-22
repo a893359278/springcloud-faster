@@ -8,7 +8,21 @@ import java.lang.annotation.Annotation;
  * @date 2019-11-16 19:06
  */
 public interface MappingHandlerAdapter {
+
+    /**
+     * Adapting GetMapping、DeleteMapping、PutMapping、PostMapping、RequestMapping
+     * @param annotation
+     * @return
+     */
     boolean adapter(Annotation annotation) ;
+
+    /**
+     * @return head (GET 、 PUT 、 POST 、 DELETE) of current request
+     */
     String method();
+
+    /**
+     * @return  url of current request
+     */
     String[] path();
 }

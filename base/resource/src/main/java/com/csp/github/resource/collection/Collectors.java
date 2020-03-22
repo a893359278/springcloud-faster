@@ -1,8 +1,8 @@
 package com.csp.github.resource.collection;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.resource.annotation.ResourceEntity;
-import com.csp.github.resource.send.RocketMqSender;
 import com.csp.github.resource.send.Sender;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +29,7 @@ import org.springframework.core.env.Environment;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(ResourceProperties.class)
-@ConditionalOnProperty(prefix = "resources.filter", value = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "resources.collector", value = "enable", havingValue = "true")
 public class Collectors implements BeanPostProcessor, ApplicationContextAware, CommandLineRunner, EnvironmentAware {
 
     @Resource
@@ -66,13 +66,15 @@ public class Collectors implements BeanPostProcessor, ApplicationContextAware, C
             log.info("资源收集线程：{}, 开启", threadName);
 
             Set<ResourceEntity> array = new HashSet<>();
-            Sender sender = getPermissionSender();
+            Sender sender = resourceProperties.getSender();
 
             try {
                 resourceProperties.getCollectionList()
                         .forEach(strategy -> array.addAll(strategy.collectionStrategy(this.list, contextPath)));
 
-                sender.sendPermissions(JSONObject.toJSONString(array));
+                for (ResourceEntity resourceEntity : array) {
+                    sender.sendResources(JSON.toJSONString(resourceEntity));
+                }
 
                 log.info("收集到的资源：{}", JSONObject.toJSONString(array));
             } catch (Exception e) {
@@ -86,19 +88,6 @@ public class Collectors implements BeanPostProcessor, ApplicationContextAware, C
         }, threadName);
 
         thread.start();
-    }
-
-    private Sender getPermissionSender() {
-        Sender sender = null;
-        switch (resourceProperties.getSend()) {
-            case rocketMQ:
-                sender = ac.getBean(RocketMqSender.class);
-                break;
-            default:
-                sender = ac.getBean(RocketMqSender.class);
-        }
-        resourceProperties.setSender(sender);
-        return sender;
     }
 
     @Override

@@ -11,5 +11,13 @@ import java.util.Set;
  */
 @FunctionalInterface
 public interface ResourceCollectionStrategy {
+
+    /**
+     * define how collect strategy
+     * @see com.csp.github.resource.collection.ResourceFilterStrategy#filter(Object, String)
+     * @param targets all cls that satisfied collection condition.
+     * @param contextPath application context path
+     * @return all resource
+     */
     Set<ResourceEntity> collectionStrategy(List<Class> targets, String contextPath);
 }

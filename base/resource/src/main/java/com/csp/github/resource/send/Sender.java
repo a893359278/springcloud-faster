@@ -7,8 +7,8 @@ package com.csp.github.resource.send;
 public interface Sender {
 
     /**
-     * 发送收集到的权限
+     * 发送收集到的资源
      * @param msg
      */
-    void sendPermissions(String msg);
+    void sendResources(String msg);
 }
