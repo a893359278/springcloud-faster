@@ -13,6 +13,34 @@
 + openfeign hystrix 统一全局处理
 + 分布式权限认证
 
+## resource 权限自动收集模块如何使用
+支持 local、redis、rocketMQ 3种收集器，默认使用redis。
+### 基本使用
+1、引入依赖
+```xml
+<dependency>
+    <groupId>com.csp.github.base</groupId>
+    <artifactId>resource</artifactId>
+</dependency>
+```
+2、启用收集器
+```yaml
+resources:
+  collector:
+    enable: true
+```
+如果需要消费收集到的资源，需要启用消费者，并实现 com.csp.github.resource.consumer.ResourceConsumerListener, 即可监听回调的资源
+
+**这里建议，专门有一个程序启用消费者即可。**
+```yaml
+resources:
+  collector:
+    consumer-listener-cls: com.csp.github.tenant.ConsumerTest
+    consumer-enable: true
+```
+其中 consumer-enable 表示是否启用，默认false。consumer-listener-cls 即实现 ResourceConsumerListener 接口的类
+
+### 工作原理
 
 
 ### 待开发
