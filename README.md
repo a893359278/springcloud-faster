@@ -2,46 +2,16 @@
 
 + 多租户模式的开源项目较少
 + 打算做成一个项目的基础框架。开发过程中，只需做好业务开发即可。不需要做其他额外的配置。
-+ Github 上有部分关于 SpringCloud 的开源项目，大多数没办法直接拿过来修改为公司的基础性框架，大部分只有单独的一个小模块。
 
-## 有什么功能
+## 功能
 ### 已完成
-+ 权限的自动收集
++ Resource 权限的自动收集
 + 多租户模块 tenant
 + swagger starter
 + fastjson starter
++ Redis starter
 + openfeign hystrix 统一全局处理
 + 分布式权限认证
-
-## resource 权限自动收集模块如何使用
-支持 local、redis、rocketMQ 3种收集器，默认使用redis。
-### 基本使用
-1、引入依赖
-```xml
-<dependency>
-    <groupId>com.csp.github.base</groupId>
-    <artifactId>resource</artifactId>
-</dependency>
-```
-2、启用收集器
-```yaml
-resources:
-  collector:
-    enable: true
-```
-如果需要消费收集到的资源，需要启用消费者，并实现 com.csp.github.resource.consumer.ResourceConsumerListener, 即可监听回调的资源
-
-**这里建议，专门有一个程序启用消费者即可。**
-```yaml
-resources:
-  collector:
-    consumer-listener-cls: com.csp.github.tenant.ConsumerTest
-    consumer-enable: true
-```
-其中 consumer-enable 表示是否启用，默认false。consumer-listener-cls 即实现 ResourceConsumerListener 接口的类
-
-### 工作原理
-![resource-work-flow.png](https://github.com/a893359278/springcloud-faster/blob/master/images/resource-work-flow.png)
 
 ### 待开发
 
@@ -49,19 +19,6 @@ resources:
 + k8s
 + 独立的 spring security 权限校验模块（代码中的 auth 模块，是由个人基于 mall 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了）
 
-  
-
-
-## 目前缺陷
-1、目前将是否需要登录的判断放在了网关模块。如果新增一个微服务。有了不需要登录的新接口，那么需要重启网关，这样的设计，还是比较麻烦。
-
-**方案A：**
-
-将不需要登录的路由放到 redis 中，依然由网关做是否登录的校验
-
-**方案B：**
-
-重新梳理网关的职能，重新开发，将是否登录下放到各个服务提供者。
 
 
 ## 快速开发Demo
@@ -129,27 +86,164 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 }
 ```
 
-这样做还要另外一个目的：swagger 上，可以直接展示实体的属性
-![image-20191210001927847](https://github.com/a893359278/springcloud-faster/blob/master/images/image-20191210000616099.png)
-
 
 ## 模块规划
 ```
 framework
-├──base.dependency 统一依赖使用
-├──base.parent 统一 nexus 
-├──base.common 公共通用类
-├──base.fastjson fastJson starter
-├──base.resource 资源收集模块
-├──base.redis-starter redis starter，封装了 protobuf，原子锁
-├──base.swagger swagger starter
-├──base.web 主要封装 histrix，全局的返回值处理，全局的 feign 返回值解码
-├──base.starter 封装了快速开发应用的依赖，以及 client 打包机制
-├──tenant 多租户模块，实现了基本的 rbac 权限认证。
+├──base
+├────base.dependency 统一依赖使用
+├────base.parent 统一 nexus 
+├────base.common 公共通用类
+├────base.mybatis-plus-entity mybatis-plus 基本实体依赖
+├────base.fastjson fastJson starter
+├────base.resource 资源收集模块
+├────base.redis-starter redis starter，封装了 protobuf，原子锁，限流
+├────base.swagger swagger stater，ui 使用 swagger-bootstrap-ui
+├────base.web 
+├──────web.common 全局异常处理、返回结果统一处理
+├──────web-feign-hystrix 全局统一处理 feign failback
+├────base.starter 快速开发应用基本包
+
 ├──auth auth 模块 是由个人开发的多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了，
+
+├──tenant 多租户模块，实现了基本的 rbac 权限认证。
+├──────tenant-client   feign 模块，第三方依赖重用
+├──────tenant-entity   实体模块
+├──────tenant-mapper   mybatis mapper 模块
+├──────tenant-rest     controller 模块
+
+├──gateway 网关，处理登录，鉴权，集成了 Swaggger-bootstrap-ui
 ```
 
+
+
+## 快速启动所有服务
+
+cd 到 docker 目录下，直接使用 docker-compose 启动所有服务。
+
+```
+docker-compose up -d
+```
+
+PS:（个人本地跑的时候，非常卡，非常耗资源。所以建议用 docker 启动 mysql、redis、**rocketMQ(巨卡,所以被我注释掉了)**，应用程序直接用 IDE 跑）。
+
+## 主要模块介绍
+
+### gateway
+
+启动 gateway、tennat 后，可再浏览器中 输入 http://localhost:11110/doc.html 访问 swagger
+
+### resource 权限自动收集模块
+
+支持 local、redis、rocketMQ 3种收集器，默认使用redis。
+
+#### 基本使用
+
+1、引入依赖
+
+```xml
+<dependency>
+    <groupId>com.csp.github.base</groupId>
+    <artifactId>resource</artifactId>
+</dependency>
+```
+
+2、启用收集器
+
+```yaml
+resources:
+  collector:
+    enable: true
+```
+
+如果需要消费收集到的资源，需要启用消费者，并实现 **com.csp.github.resource.consumer.ResourceConsumerListener**, 监听回调的资源
+
+**这里建议，专门有一个程序启用消费者即可。**
+
+```yaml
+resources:
+  collector:
+    consumer-listener-cls: com.csp.github.tenant.ConsumerTest
+    consumer-enable: true
+```
+
+其中 consumer-enable 表示是否启用，默认false。consumer-listener-cls 即实现 ResourceConsumerListener 接口的类
+
+#### 工作原理
+
+![resource-work-flow.png](https://github.com/a893359278/springcloud-faster/blob/master/images/resource-work-flow.png)
+
+
+
+### redis-starter
+
+Redis-starer 提供 protobuf 序列化、分布式以及单机环境下的锁实现
+
+##### 基本使用
+
+```xml
+<dependency>
+  <groupId>com.csp.github.base</groupId>
+  <artifactId>redis-starter</artifactId>
+</dependency>
+```
+
+##### 使用 protobuf 序列化
+
+```java
+@Autowire
+ProtobufRedisTemplate protobufRedisTemplate;
+```
+
+**注意：protobuf 不支持 hash 操作**
+
+##### 使用锁
+
+在程序入口，启用。
+
+```java
+@EnableLockAspect
+```
+
+在需要锁的方法上添加注解。**默认用 redis 实现锁**
+
+```
+@Lock
+```
+
+默认使用 redis。全局更换锁实现。
+
+```yaml
+lock:
+  type: LOCAL
+```
+
+此配置，会将所有锁实现强制更换为 Local。如果某个特定方法，不想被强制更换。将 Lock 的 override 置为 false 即可
+
+```java
+@Lock(override=false)
+```
+
+### tenant
+
+原项目使用的是 client 打包机制，后考虑到 client 打包有可能造成 maven 间的循环依赖问题，将项目拆分成 client，entity，mapper，rest。以最大的程度，进行重用。
+
+例如，如果有别的 Application 要使用 tenant 提供的服务。只需 引入 tenant-client 模块即可。
+
+## 目前缺陷
+
+1、目前将是否需要登录的判断放在了网关模块。如果新增一个微服务。有了不需要登录的新接口，那么需要重启网关，这样的设计，还是比较麻烦。
+
+**方案A：**
+
+将不需要登录的路由放到 redis 中，依然由网关做是否登录的校验
+
+**方案B：**
+
+重新梳理网关的职能，重新开发，将是否登录下放到各个服务提供者。
+
 ## 作者联系方式
+
 **欢迎探讨改进项目**
 
 + 微信：a792966514
