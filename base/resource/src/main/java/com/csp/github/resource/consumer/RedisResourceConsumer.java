@@ -1,9 +1,10 @@
 package com.csp.github.resource.consumer;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.csp.github.resource.annotation.ResourceEntity;
 import com.csp.github.resource.collection.ResourceProperties;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -30,9 +31,10 @@ public class RedisResourceConsumer implements ResourceConsumer {
     private void pullDataFromRedisServer() {
         ListOperations<String, String> ops = redisTemplate.opsForList();
         pullDataExecutor.scheduleWithFixedDelay(() -> {
-            String data = ops.leftPop(ResourceProperties.DEFAULT_CHANNEL);
-            if (StrUtil.isNotBlank(data)) {
-                msgBlockingQueue.add(data);
+            List<String> list = ops.range(ResourceProperties.DEFAULT_CHANNEL, 0, 100);
+            if (CollectionUtil.isNotEmpty(list)) {
+                msgBlockingQueue.addAll(list);
+                ops.trim(ResourceProperties.DEFAULT_CHANNEL, list.size(), -1);
             }
         }, 10, 30, TimeUnit.SECONDS);
     }

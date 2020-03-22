@@ -27,13 +27,12 @@ public class ResourceConsumerRunner implements CommandLineRunner {
             ResourceConsumer consumer = resourceProperties.getConsumer();
             ResourceConsumeListener consumeListener = resourceProperties.getConsumeListener();
             Thread t = new Thread(() -> {
-                long time = 1;
                 while (true) {
                     ResourceEntity resourceEntity = consumer.pullResource();
                     if (Objects.nonNull(resourceEntity)) {
                         consumeListener.consume(resourceEntity);
                     } else {
-                        ThreadUtil.sleep((time * 60) % Long.MAX_VALUE, TimeUnit.SECONDS);
+                        ThreadUtil.sleep(30, TimeUnit.SECONDS);
                     }
                 }
             });
