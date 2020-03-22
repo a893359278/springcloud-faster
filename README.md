@@ -137,6 +137,14 @@ PS:（个人本地跑的时候，非常卡，非常耗资源。所以建议用 d
 
 支持 local、redis、rocketMQ 3种收集器，默认使用redis。
 
+#### 过滤器
+
+默认过滤具有 Controller，RestController。支持扩展。
+
+#### 收集器
+
+resource 支持 swagger 注解的收集（默认使用 Swagger 注解收集），同时也支持 @ResourceCollection 注解的收集。Swagger 的收集策略，具体请看 com.csp.github.resource.collection.SwaggerResourceCollectionStrategy 类的实现。 支持扩展
+
 #### 基本使用
 
 1、引入依赖
