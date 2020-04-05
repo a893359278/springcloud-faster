@@ -15,6 +15,8 @@
 
 ### 待开发
 
++ 限流，幂等
++ 通用的接口；如 长链转短链服务。
 + 日志配置统一配置
 + k8s
 + 独立的 spring security 权限校验模块（代码中的 auth 模块，是由个人基于 mall 开源项目二次开发的 多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了）
@@ -90,19 +92,17 @@ public AdminUser userFullInfo(@PathVariable Long id) {
 ## 模块规划
 ```
 framework
-├──base
-├────base.dependency 统一依赖使用
-├────base.parent 统一 nexus 
-├────base.common 公共通用类
-├────base.mybatis-plus-entity mybatis-plus 基本实体依赖
-├────base.fastjson fastJson starter
-├────base.resource 资源收集模块
-├────base.redis-starter redis starter，封装了 protobuf，原子锁，限流
-├────base.swagger swagger stater，ui 使用 swagger-bootstrap-ui
-├────base.web 
+├──parent 统一依赖
+├────parent.common 公共通用类
+├────parent.mybatis-plus-entity mybatis-plus 基本实体依赖
+├────parent.fastjson fastJson starter
+├────parent.resource 资源收集模块
+├────parent.redis-starter redis starter，封装了 protobuf，原子锁，限流
+├────parent.swagger swagger stater，ui 使用 swagger-bootstrap-ui
+├────parent.web 
 ├──────web.common 全局异常处理、返回结果统一处理
 ├──────web-feign-hystrix 全局统一处理 feign failback
-├────base.starter 快速开发应用基本包
+├────parent.starter 快速开发应用基本包
 
 ├──auth auth 模块 是由个人开发的多租户商城（单体架构），剥离出来的，所以代码中有很多 该项目的业务逻辑，为了不报错，大部分代码都被注释掉了，
 
