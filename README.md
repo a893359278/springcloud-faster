@@ -252,6 +252,10 @@ lock:
 + 微信：a792966514
 + 思否：[思否](https://segmentfault.com/u/xinwusitiandikuan "思否")
 + Email: 18250073990@163.com
++ b 站：https://space.bilibili.com/286605500  **健身吗-程序猿小哥哥**
++ 公众号：**不能放弃治疗**
+
+![qrcode_for_gh_516f802f1245_258.jpg](https://github.com/a893359278/springcloud-faster/blob/master/images/qrcode_for_gh_516f802f1245_258.jpg)
 
 ## Q&A
 Q: 微服务还有那么多组件为什么不集成
