@@ -29,7 +29,7 @@
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <freemarker.version>2.3.29</freemarker.version>
         <mybatis-plus-generator.version>3.2.0</mybatis-plus-generator.version>
-        <fastjson.version>1.2.62</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <protobuf.version>1.6.2</protobuf.version>
         <feign-form.version>3.8.0</feign-form.version>
         <hutool.version>5.0.6</hutool.version>
